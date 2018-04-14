@@ -2,9 +2,9 @@ program SpTrello;
 
 uses
   Forms,
-  View.ServerModule in 'View\View.ServerModule.pas' {ServerModule: TUniGUIServerModule},
-  View.MainModule in 'View\View.MainModule.pas' {MainModule: TUniGUIMainModule},
-  View.Main in 'View\View.Main.pas' {Main: TUniForm},
+  ServerModule in 'ServerModule\ServerModule.pas' {UniServerModule: TUniGUIServerModule},
+  MainModule in 'MainModule\MainModule.pas' {UniMainModule: TUniGUIMainModule},
+  Principal in 'Principal\Principal.pas' {FrmMain: TUniForm},
   SpTrello.Authenticator in 'Lib\Authenticator\SpTrello.Authenticator.pas',
   Core.SpTrello.Authenticator in 'Lib\Core\Core.SpTrello.Authenticator.pas',
   Core.SpTrello.Base in 'Lib\Core\Core.SpTrello.Base.pas',
@@ -20,18 +20,13 @@ uses
   Core.SpTrello.Lists in 'Lib\Core\Core.SpTrello.Lists.pas',
   SpTrello.Lists in 'Lib\Lists\SpTrello.Lists.pas',
   Core.SpTrello.Cards in 'Lib\Core\Core.SpTrello.Cards.pas',
-  SpTrello.Cards in 'Lib\Cards\SpTrello.Cards.pas',
-  Controller.Main in 'Controller\Controller.Main.pas',
-  Controller.ServerModule in 'Controller\Controller.ServerModule.pas',
-  Controller.MainModule in 'Controller\Controller.MainModule.pas';
+  SpTrello.Cards in 'Lib\Cards\SpTrello.Cards.pas';
 
 {$R *.res}
 
 begin
   ReportMemoryLeaksOnShutdown := True;
   Application.Initialize;
-  //TServerModule.Create(Application);
-  //TControllerServerModule.Create;
-  TControllerServerModule.GetInstancia;
+  TUniServerModule.Create(Application);
   Application.Run;
 end.

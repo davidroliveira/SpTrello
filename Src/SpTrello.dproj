@@ -152,16 +152,16 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="View\View.ServerModule.pas">
-            <Form>ServerModule</Form>
+        <DCCReference Include="ServerModule\ServerModule.pas">
+            <Form>UniServerModule</Form>
             <DesignClass>TUniGUIServerModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="View\View.MainModule.pas">
-            <Form>MainModule</Form>
+        <DCCReference Include="MainModule\MainModule.pas">
+            <Form>UniMainModule</Form>
             <DesignClass>TUniGUIMainModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="View\View.Main.pas">
-            <Form>Main</Form>
+        <DCCReference Include="Principal\Principal.pas">
+            <Form>FrmMain</Form>
             <DesignClass>TUniForm</DesignClass>
         </DCCReference>
         <DCCReference Include="Lib\Authenticator\SpTrello.Authenticator.pas"/>
@@ -180,9 +180,6 @@
         <DCCReference Include="Lib\Lists\SpTrello.Lists.pas"/>
         <DCCReference Include="Lib\Core\Core.SpTrello.Cards.pas"/>
         <DCCReference Include="Lib\Cards\SpTrello.Cards.pas"/>
-        <DCCReference Include="Controller\Controller.Main.pas"/>
-        <DCCReference Include="Controller\Controller.ServerModule.pas"/>
-        <DCCReference Include="Controller\Controller.MainModule.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
