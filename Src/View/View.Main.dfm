@@ -1,9 +1,9 @@
-object MainForm: TMainForm
+object Main: TMain
   Left = 0
   Top = 0
   ClientHeight = 640
   ClientWidth = 709
-  Caption = 'MainForm'
+  Caption = 'Main'
   OldCreateOrder = False
   Script.Strings = (
     '$(function () {'
@@ -102,17 +102,9 @@ object MainForm: TMainForm
         'e'#39', []);'#13#10'}')
     TabOrder = 0
     OnAjaxEvent = UniPageControl1AjaxEvent
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 693
-    ExplicitHeight = 609
     object UniTabSheet1: TUniTabSheet
       Hint = ''
       Caption = 'UniTabSheet1'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 289
-      ExplicitHeight = 193
       DesignSize = (
         701
         612)
@@ -165,10 +157,6 @@ object MainForm: TMainForm
     object UniTabSheet2: TUniTabSheet
       Hint = ''
       Caption = 'UniTabSheet2'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 289
-      ExplicitHeight = 193
       object UniLabel1: TUniLabel
         Left = 0
         Top = 0
@@ -185,8 +173,6 @@ object MainForm: TMainForm
         ParentColor = False
         Color = clLime
         TabOrder = 0
-        ExplicitLeft = 312
-        ExplicitTop = 152
       end
     end
   end

@@ -17,9 +17,4 @@ implementation
 
 {$R *.dfm}
 
-uses
-  UniGUIVars;
-
-initialization
-  RegisterMainModuleClass(TMainModule);
 end.

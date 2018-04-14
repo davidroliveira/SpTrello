@@ -4,7 +4,7 @@ interface
 
 uses
   Classes, SysUtils, uniGUIServer, uniGUIMainModule, uniGUIApplication, uIdCustomHTTPServer,
-  uniGUITypes;
+  uniGUITypes, UniGUIVars;
 
 type
   TServerModule = class(TUniGUIServerModule)
@@ -20,14 +20,9 @@ implementation
 
 {$R *.dfm}
 
-uses
-  UniGUIVars;
-
 procedure TServerModule.FirstInit;
 begin
   InitServerModule(Self);
 end;
 
-initialization
-  RegisterServerModuleClass(TServerModule);
 end.

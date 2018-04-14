@@ -13,7 +13,7 @@ uses
   uniPanel, uniPageControl, uniHTMLFrame, View.ServerModule, uniLabel;
 
 type
-  TMainForm = class(TUniForm)
+  TMain = class(TUniForm)
     QryQuadros: TFDMemTable;
     DSQuadros: TDataSource;
     GridQuadros: TUniDBGrid;
@@ -50,10 +50,9 @@ implementation
 
 {$R *.dfm}
 
-uses
-  uniGUIVars, uniGUIApplication;
+uses View.MainModule;
 
-procedure TMainForm.AjusteColunasGrid(Grid: TUniDBGrid);
+procedure TMain.AjusteColunasGrid(Grid: TUniDBGrid);
 var
   i: Integer;
 begin
@@ -66,7 +65,7 @@ begin
   end;
 end;
 
-procedure TMainForm.QryListaAfterScroll(DataSet: TDataSet);
+procedure TMain.QryListaAfterScroll(DataSet: TDataSet);
 begin
   if SpTrelloCards.IdList <> SpTrelloLists.DataSet.FieldByName('id').AsString then
   begin
@@ -80,7 +79,7 @@ begin
   AjusteColunasGrid(GridCards);
 end;
 
-procedure TMainForm.QryQuadrosAfterScroll(DataSet: TDataSet);
+procedure TMain.QryQuadrosAfterScroll(DataSet: TDataSet);
 begin
   if SpTrelloLists.IdBoard <> SpTrelloBoards.DataSet.FieldByName('id').AsString then
   begin
@@ -94,7 +93,7 @@ begin
   AjusteColunasGrid(GridLista);
 end;
 
-procedure TMainForm.UniButton2Click(Sender: TObject);
+procedure TMain.UniButton2Click(Sender: TObject);
 begin
   oAuthenticator.User := 'davidroliveira';
   oAuthenticator.Key := '7792613d72989f58b30d11e4017ca86d';
@@ -107,7 +106,7 @@ begin
   AjusteColunasGrid(GridQuadros);
 end;
 
-procedure TMainForm.UniFormCreate(Sender: TObject);
+procedure TMain.UniFormCreate(Sender: TObject);
 begin
   oAuthenticator := TSpTrelloAuthenticator.Create(self);
   SpTrelloBoards := TSpTrelloBoards.Create(self);
@@ -115,7 +114,7 @@ begin
   SpTrelloCards := TSpTrelloCards.Create(Self);
 end;
 
-procedure TMainForm.UniFormDestroy(Sender: TObject);
+procedure TMain.UniFormDestroy(Sender: TObject);
 begin
   FreeAndNil(SpTrelloCards);
   FreeAndNil(SpTrelloLists);
@@ -123,14 +122,12 @@ begin
   FreeAndNil(oAuthenticator);
 end;
 
-procedure TMainForm.UniPageControl1AjaxEvent(Sender: TComponent;
+procedure TMain.UniPageControl1AjaxEvent(Sender: TComponent;
   EventName: string; Params: TUniStrings);
 begin
   if EventName = 'resize' then
     UniSession.AddJS('$(''#container'').highcharts().reflow()');
-end;
 
-initialization
-  RegisterAppFormClass(TMainForm);
+end;
 
 end.

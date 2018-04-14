@@ -161,7 +161,7 @@
             <DesignClass>TUniGUIMainModule</DesignClass>
         </DCCReference>
         <DCCReference Include="View\View.Main.pas">
-            <Form>MainForm</Form>
+            <Form>Main</Form>
             <DesignClass>TUniForm</DesignClass>
         </DCCReference>
         <DCCReference Include="Lib\Authenticator\SpTrello.Authenticator.pas"/>

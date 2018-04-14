@@ -1,18 +1,10 @@
-{$define UNIGUI_VCL} // Comment out this line to turn this project into an ISAPI module
-
-{$ifndef UNIGUI_VCL}
-library
-{$else}
-program
-{$endif}
-  SpTrello;
+program SpTrello;
 
 uses
-  uniGUIISAPI,
   Forms,
   View.ServerModule in 'View\View.ServerModule.pas' {ServerModule: TUniGUIServerModule},
   View.MainModule in 'View\View.MainModule.pas' {MainModule: TUniGUIMainModule},
-  View.Main in 'View\View.Main.pas' {MainForm: TUniForm},
+  View.Main in 'View\View.Main.pas' {Main: TUniForm},
   SpTrello.Authenticator in 'Lib\Authenticator\SpTrello.Authenticator.pas',
   Core.SpTrello.Authenticator in 'Lib\Core\Core.SpTrello.Authenticator.pas',
   Core.SpTrello.Base in 'Lib\Core\Core.SpTrello.Base.pas',
@@ -35,18 +27,11 @@ uses
 
 {$R *.res}
 
-{$ifndef UNIGUI_VCL}
-exports
-  GetExtensionVersion,
-  HttpExtensionProc,
-  TerminateExtension;
-{$endif}
-
 begin
-{$ifdef UNIGUI_VCL}
   ReportMemoryLeaksOnShutdown := True;
   Application.Initialize;
-  TServerModule.Create(Application);
+  //TServerModule.Create(Application);
+  //TControllerServerModule.Create;
+  TControllerServerModule.GetInstancia;
   Application.Run;
-{$endif}
 end.
