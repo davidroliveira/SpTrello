@@ -1,33 +1,36 @@
-object FrmMain: TFrmMain
+object FrmPrincipal: TFrmPrincipal
   Left = 0
   Top = 0
   ClientHeight = 640
   ClientWidth = 709
-  Caption = 'FrmMain'
+  Caption = 'FrmPrincipal'
   OldCreateOrder = False
   Script.Strings = (
     '$(function () {'
     ''
-    #9'$('#39'#automacao'#39').highcharts({'
+    #9'$('#39'#%AUTOMACAO%'#39').highcharts({'
     #9'            '
     #9'    chart: {'
     #9'        polar: true,'
-    #9'        type: '#39'line'#39
+    #9'        type: '#39'area'#39', '
+    '           downloadCSV: "Download CSV teste"            '
     #9'    },'
     #9'    '
     #9'    title: {'
-    #9'        text: '#39'Budget vs spending'#39','
-    #9'        x: -80'
+    #9'        //text: '#39'Budget vs spending'#39','
+    '           text: '#39'%TITULOAUTOMACAO%'#39','
+    #9'        x: -50'
     #9'    },'
     #9'    '
     #9'    pane: {'
-    #9'    '#9'size: '#39'100%'#39
+    #9'    '#9'size: '#39'80%'#39
     #9'    },'
     #9'    '
     #9'    xAxis: {'
     
-      #9'        categories: ['#39'Sales'#39', '#39'Marketing'#39', '#39'Development'#39', '#39'Cust' +
-      'omer Support'#39', '#39'Information Technology'#39', '#39'Administration'#39'],'
+      #9'        //categories: ['#39'Sales'#39', '#39'Marketing'#39', '#39'Development'#39', '#39'Cu' +
+      'stomer Support'#39', '#39'Information Technology'#39', '#39'Administration'#39'],'
+    '           categories: [%CATEGORIASAUTOMACAO%],'
     #9'        tickmarkPlacement: '#39'on'#39','
     #9'        lineWidth: 0'
     #9'    },'
@@ -35,14 +38,27 @@ object FrmMain: TFrmMain
     #9'    yAxis: {'
     #9'        gridLineInterpolation: '#39'polygon'#39','
     #9'        lineWidth: 0,'
-    #9'        min: 0'
+    #9'        min: 0,'
+    '           max: 100,'
+    ''
+    '              endOnTick: false,'
+    '              //showLastLabel: true,'
+    '              title: {'
+    '                  text: '#39'Conclus'#227'o (%)'#39
+    '              },'
+    '              labels: {'
+    '                  formatter: function () {'
+    '                      return this.value + '#39'%'#39';'
+    '                  }'
+    '              },'
+    '              reversedStacks: false           '
     #9'    },'
     #9'    '
     #9'    tooltip: {'
     #9'    '#9'shared: true,'
     
       #9'        pointFormat: '#39'<span style="color:{series.color}">{serie' +
-      's.name}: <b>${point.y:,.0f}</b><br/>'#39
+      's.name}: <b>{point.y:,.0f}%</b><br/>'#39
     #9'    },'
     #9'    '
     #9'    legend: {'
@@ -53,36 +69,40 @@ object FrmMain: TFrmMain
     #9'    },'
     #9'    '
     #9'    series: [{'
-    #9'        name: '#39'Allocated Budget'#39','
-    #9'        data: [43000, 19000, 60000, 35000, 17000, 10000],'
+    #9'        name: '#39'Cards'#39','
+    
+      #9'        //data: [43000, 19000, 60000, 35000, 17000, 10000, 5000' +
+      ', 3000, 0, 0],'
+    #9#9#9'  data: [%DATAAUTOMACAO%],'
     #9'        pointPlacement: '#39'on'#39
-    #9'    }, {'
+    #9'    }/*, {'
     #9'        name: '#39'Actual Spending'#39','
     #9'        data: [50000, 39000, 42000, 31000, 26000, 14000],'
     #9'        pointPlacement: '#39'on'#39
-    #9'    }]'
+    #9'    }*/]'
     #9
     #9'});'
     '});'
     ''
-    ''
-    'function _resizeTablet() {'
-    '    document.getElementById("viewport").style.width = "1200px";'
-    '    Highcharts.charts.forEach(function(chart) {'
-    '        chart.reflow();'
+    '$(function() {'
+    '    Highcharts.setOptions({'
+    '        chart: {'
+    '            backgroundColor: {'
+    '                linearGradient: [0, 0, 500, 500],'
+    '                stops: ['
+    '                    [0, '#39'rgb(255, 255, 255)'#39'],'
+    '                    [1, '#39'rgb(240, 240, 255)'#39']'
+    '                    ]'
+    '            },'
+    '            borderWidth: 2,'
+    '            plotBackgroundColor: '#39'rgba(255, 255, 255, .9)'#39','
+    '            plotShadow: true,'
+    '            plotBorderWidth: 1'
+    '        }'
     '    });'
-    '}'
-    ''
-    'function _resizeDesktop() {'
-    '    document.getElementById("viewport").style.width = "1700px";'
-    '    Highcharts.charts.forEach(function(chart) {'
-    '        chart.reflow();'
-    '    });'
-    ''
-    '}')
+    '});')
   MonitoredKeys.Keys = <>
   OnCreate = UniFormCreate
-  OnDestroy = UniFormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object UniPageControl1: TUniPageControl
@@ -91,7 +111,7 @@ object FrmMain: TFrmMain
     Width = 709
     Height = 640
     Hint = ''
-    ActivePage = TSGrafico
+    ActivePage = TSGraficoSonarAutomacao
     Align = alClient
     Anchors = [akLeft, akTop, akRight, akBottom]
     ClientEvents.ExtEvents.Strings = (
@@ -104,66 +124,14 @@ object FrmMain: TFrmMain
         ');'#13#10'}')
     TabOrder = 0
     OnAjaxEvent = UniPageControl1AjaxEvent
-    object TSDados: TUniTabSheet
+    object TSGraficoSonarAutomacao: TUniTabSheet
       Hint = ''
-      Caption = 'TSDados'
-      DesignSize = (
-        701
-        612)
-      object GridCards: TUniDBGrid
-        Left = 3
-        Top = 418
-        Width = 666
-        Height = 160
-        Hint = ''
-        DataSource = DSCards
-        LoadMask.Message = 'Loading data...'
-        Anchors = [akLeft, akTop, akRight]
-        TabOrder = 0
-      end
-      object GridLista: TUniDBGrid
-        Left = 0
-        Top = 242
-        Width = 666
-        Height = 160
-        Hint = ''
-        DataSource = DSLista
-        LoadMask.Message = 'Loading data...'
-        Anchors = [akLeft, akTop, akRight]
-        TabOrder = 1
-      end
-      object GridQuadros: TUniDBGrid
-        Left = 0
-        Top = 55
-        Width = 666
-        Height = 160
-        Hint = ''
-        DataSource = DSQuadros
-        LoadMask.Message = 'Loading data...'
-        Anchors = [akLeft, akTop, akRight]
-        TabOrder = 2
-      end
-      object BtnAbrir: TUniButton
-        Left = 8
-        Top = 24
-        Width = 75
-        Height = 25
-        Hint = ''
-        Caption = 'Abrir'
-        TabOrder = 3
-        ScreenMask.Enabled = True
-        ScreenMask.WaitData = True
-        OnClick = BtnAbrirClick
-      end
-    end
-    object TSGrafico: TUniTabSheet
-      Hint = ''
-      Caption = 'TSGrafico'
+      Caption = 'Gr'#225'fico Sonar Automa'#231#227'o'
       object LbAutomacao: TUniLabel
         Left = 0
-        Top = 0
+        Top = 35
         Width = 701
-        Height = 612
+        Height = 577
         Hint = ''
         TextConversion = txtHTML
         AutoSize = False
@@ -174,10 +142,40 @@ object FrmMain: TFrmMain
         Color = clLime
         TabOrder = 0
       end
+      object UniPanel1: TUniPanel
+        Left = 0
+        Top = 0
+        Width = 701
+        Height = 35
+        Hint = ''
+        Align = alTop
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 1
+        BorderStyle = ubsNone
+        ShowCaption = False
+        Caption = 'UniPanel1'
+        DesignSize = (
+          701
+          35)
+        object BtnAtualizarSonarAutomacao: TUniSpeedButton
+          Left = 590
+          Top = 5
+          Width = 100
+          Height = 25
+          Hint = ''
+          Caption = 'Atualizar'
+          Anchors = [akTop, akRight]
+          ParentColor = False
+          Color = clWindow
+          ScreenMask.Enabled = True
+          ScreenMask.WaitData = True
+          TabOrder = 1
+          OnClick = BtnAtualizarSonarAutomacaoClick
+        end
+      end
     end
   end
   object QryQuadros: TFDMemTable
-    AfterScroll = QryQuadrosAfterScroll
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -188,13 +186,7 @@ object FrmMain: TFrmMain
     Left = 240
     Top = 128
   end
-  object DSQuadros: TDataSource
-    DataSet = QryQuadros
-    Left = 296
-    Top = 128
-  end
   object QryLista: TFDMemTable
-    AfterScroll = QryListaAfterScroll
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -203,11 +195,6 @@ object FrmMain: TFrmMain
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     Left = 232
-    Top = 312
-  end
-  object DSLista: TDataSource
-    DataSet = QryLista
-    Left = 288
     Top = 312
   end
   object QryCards: TFDMemTable
@@ -221,9 +208,46 @@ object FrmMain: TFrmMain
     Left = 232
     Top = 480
   end
-  object DSCards: TDataSource
-    DataSet = QryCards
-    Left = 288
-    Top = 480
+  object cdsCategorias: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'name'
+        DataType = ftString
+        Size = 1000
+      end
+      item
+        Name = 'quantidade'
+        DataType = ftInteger
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 524
+    Top = 176
+  end
+  object cdsSeries: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'name'
+        DataType = ftString
+        Size = 1000
+      end
+      item
+        Name = 'lista'
+        DataType = ftString
+        Size = 1000
+      end
+      item
+        Name = 'quantidade'
+        DataType = ftInteger
+      end>
+    IndexDefs = <>
+    IndexFieldNames = 'name;lista'
+    Params = <>
+    StoreDefs = True
+    Left = 516
+    Top = 248
   end
 end

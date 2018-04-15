@@ -2,9 +2,10 @@ program SpTrello;
 
 uses
   Forms,
+  Midaslib,
   ServerModule in 'ServerModule\ServerModule.pas' {UniServerModule: TUniGUIServerModule},
   MainModule in 'MainModule\MainModule.pas' {UniMainModule: TUniGUIMainModule},
-  Principal in 'Principal\Principal.pas' {FrmMain: TUniForm},
+  Principal in 'Principal\Principal.pas' {FrmPrincipal: TUniForm},
   SpTrello.Authenticator in 'Lib\Authenticator\SpTrello.Authenticator.pas',
   Core.SpTrello.Authenticator in 'Lib\Core\Core.SpTrello.Authenticator.pas',
   Core.SpTrello.Base in 'Lib\Core\Core.SpTrello.Base.pas',
@@ -28,5 +29,6 @@ begin
   ReportMemoryLeaksOnShutdown := True;
   Application.Initialize;
   TUniServerModule.Create(Application);
+  Application.Title := 'SpTrello';
   Application.Run;
 end.

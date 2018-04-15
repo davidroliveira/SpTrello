@@ -1,5 +1,6 @@
 object UniServerModule: TUniServerModule
   OldCreateOrder = False
+  OnCreate = UniGUIServerModuleCreate
   TempFolder = 'temp\'
   Title = 'New Application'
   SuppressErrors = []
@@ -20,7 +21,10 @@ object UniServerModule: TUniServerModule
       '/script>-->'
     
       '<script src="https://code.highcharts.com/modules/exporting.js"><' +
-      '/script>'#9)
+      '/script>'#9
+    
+      '<script src="https://code.highcharts.com/modules/export-data.js"' +
+      '></script>')
   SSL.SSLOptions.RootCertFile = 'root.pem'
   SSL.SSLOptions.CertFile = 'cert.pem'
   SSL.SSLOptions.KeyFile = 'key.pem'

@@ -4,10 +4,11 @@ interface
 
 uses
   Classes, SysUtils, uniGUIServer, uniGUIMainModule, uniGUIApplication,
-  uIdCustomHTTPServer, uniGUITypes, UniGUIVars;
+  uIdCustomHTTPServer, uniGUITypes, UniGUIVars, Forms;
 
 type
   TUniServerModule = class(TUniGUIServerModule)
+    procedure UniGUIServerModuleCreate(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -23,6 +24,11 @@ implementation
 procedure TUniServerModule.FirstInit;
 begin
   InitServerModule(Self);
+end;
+
+procedure TUniServerModule.UniGUIServerModuleCreate(Sender: TObject);
+begin
+  Self.Title := Application.Title;
 end;
 
 initialization
