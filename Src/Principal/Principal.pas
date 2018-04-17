@@ -11,7 +11,7 @@ uses
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, uniBasicGrid, uniDBGrid,
   SpTrello.Authenticator, SpTrello.Boards, SpTrello.Lists, SpTrello.Cards,
   uniPanel, uniPageControl, uniHTMLFrame, ServerModule, uniLabel, uniBitBtn,
-  uniSpeedButton, Datasnap.DBClient;
+  uniSpeedButton, Datasnap.DBClient, uniTimer;
 
 type
   TFrmPrincipal = class(TUniForm)
@@ -19,16 +19,16 @@ type
     QryLista: TFDMemTable;
     QryCards: TFDMemTable;
     UniPageControl1: TUniPageControl;
-    TSGraficoSonarAutomacao: TUniTabSheet;
+    TSGraficoSPTrelloAutomacao: TUniTabSheet;
     LbAutomacao: TUniLabel;
     UniPanel1: TUniPanel;
-    BtnAtualizarSonarAutomacao: TUniSpeedButton;
     cdsCategorias: TClientDataSet;
     cdsSeries: TClientDataSet;
+    UniTimer: TUniTimer;
     procedure UniPageControl1AjaxEvent(Sender: TComponent; EventName: string;
       Params: TUniStrings);
-    procedure BtnAtualizarSonarAutomacaoClick(Sender: TObject);
     procedure UniFormCreate(Sender: TObject);
+    procedure UniTimerTimer(Sender: TObject);
   private
     { Private declarations }
     ScriptOriginal: string;
@@ -60,13 +60,6 @@ begin
   end;
 end;
 
-procedure TFrmPrincipal.BtnAtualizarSonarAutomacaoClick(Sender: TObject);
-begin
-  ConsultaDadosTrello(True);
-  //UniSession.Synchronize(True);
-  //UniSession.AddJS('$(' + QuotedStr('#' + cGRAFICOAUTOMACAO) + ').highcharts().redraw()');
-end;
-
 procedure TFrmPrincipal.ConsultaDadosTrello(ExecutaRedraw: Boolean);
 var
   oAuthenticator: TSpTrelloAuthenticator;
@@ -74,11 +67,11 @@ var
   SpTrelloLists: TSpTrelloLists;
   SpTrelloCards: TSpTrelloCards;
   Retorno: string;
+  RetornoID: Integer;
   Categorias: string;
   Series: string;
-  i: Integer;
 
-  function ValidarCard(const ACard: string): string;
+  procedure ValidarCard(const ACard: string; out IdCard: Integer; out NameCard: string);
   var
     j: Integer;
     ContaInicio, ContaFim, ContaPonto: Integer;
@@ -91,7 +84,8 @@ var
     ContaPonto := 0;
     Valido := False;
     ParouPorErro := False;
-    Result := NullAsStringValue;
+    NameCard := NullAsStringValue;
+    IdCard := 0;
     Prefixo := NullAsStringValue;
     for j := 1 to ACard.Length do
     begin
@@ -111,22 +105,29 @@ var
         if ACard[j] = '.' then
           Inc(ContaPonto);
 
-        if ContaPonto < 2 then
+        //if ContaPonto < 2 then
+        if ContaPonto < 1 then
           Prefixo := Prefixo + ACard[j];
       end;
 
-      if (ContaInicio = 3) and (ContaFim < 3) and (ACard[j] <> '[') then
-        Result := Result + ACard[j];
+      //if (ContaInicio = 3) and (ContaFim < 3) and (ACard[j] <> '[') then
+      if (ContaInicio = 2) and (ContaFim < 2) and (ACard[j] <> '[') then
+        NameCard := NameCard + ACard[j];
     end;
-    Valido := (ContaInicio = 4) and (ContaInicio = 4) and (not ParouPorErro);
+    Valido := (ContaInicio in [4,6]) and (ContaFim = ContaInicio) and (not ParouPorErro);
     if not Valido then
-      Result := NullAsStringValue
+      NameCard := NullAsStringValue
     else
-      Result := '[' + Prefixo + ']-' + Result;
+    begin
+      IdCard := StrToInt(Prefixo);
+      NameCard := '[' + Prefixo + ']-' + NameCard;
+    end;
   end;
 
 begin
-  ScriptOriginal := Self.Script.Text;
+  //LbAutomacao.Caption :=
+  //ScriptOriginal := Self.Script.Text;
+  Self.Script.Text := ScriptOriginal;
   try
     try
       oAuthenticator := TSpTrelloAuthenticator.Create(self);
@@ -186,13 +187,15 @@ begin
                     SpTrelloCards.DataSet.First;
                     while not SpTrelloCards.DataSet.Eof do
                     begin
-                      Retorno := ValidarCard(SpTrelloCards.DataSet.FieldByName('name').AsString);
+                      //Retorno := ValidarCard(SpTrelloCards.DataSet.FieldByName('name').AsString);
+                      ValidarCard(SpTrelloCards.DataSet.FieldByName('name').AsString, RetornoID, Retorno);
                       if Retorno <> NullAsStringValue then
                       begin
                         if cdsCategorias.Locate('name', Retorno, [loCaseInsensitive]) then
                           cdsCategorias.Edit
                         else
                           cdsCategorias.Insert;
+                        cdsCategorias.FieldByName('id').AsInteger := RetornoID;
                         cdsCategorias.FieldByName('name').AsString := Retorno;
                         cdsCategorias.FieldByName('quantidade').AsInteger := cdsCategorias.FieldByName('quantidade').AsInteger + 1;
                         cdsCategorias.Post;
@@ -220,15 +223,18 @@ begin
               cdsCategorias.First;
               while not cdsCategorias.Eof do
               begin
-                Categorias := Categorias + QuotedStr(cdsCategorias.FieldByName('name').AsString);
-                if cdsCategorias.RecNo < cdsCategorias.RecordCount then
-                  Categorias := Categorias + ', ';
+//                Categorias := Categorias + QuotedStr(cdsCategorias.FieldByName('name').AsString);
+//                if cdsCategorias.RecNo < cdsCategorias.RecordCount then
+//                  Categorias := Categorias + ', ';
 
                 cdsSeries.First;
                 if cdsSeries.Locate('name', cdsCategorias.FieldByName('name').AsString, [loCaseInsensitive]) then
                 begin
                   FormatSettings.DecimalSeparator := '.';
-                  Series := Series + FormatFloat('0.####', ((cdsSeries.FieldByName('quantidade').AsInteger / cdsCategorias.FieldByName('quantidade').AsInteger) * 100));
+                  Series := Series + '{name: ' + QuotedStr(cdsCategorias.FieldByName('name').AsString +
+                    ' Cards: ' + FormatFloat('0', cdsSeries.FieldByName('quantidade').AsInteger) + '/' + FormatFloat('0', cdsCategorias.FieldByName('quantidade').AsInteger)) +
+                    ', y: ' + FormatFloat('0.####', ((cdsSeries.FieldByName('quantidade').AsInteger / cdsCategorias.FieldByName('quantidade').AsInteger) * 100)) + '}';
+                  //Series := Series + FormatFloat('0.####', ((cdsSeries.FieldByName('quantidade').AsInteger / cdsCategorias.FieldByName('quantidade').AsInteger) * 100));
                   FormatSettings.DecimalSeparator := ',';
                 end
                 else
@@ -237,10 +243,25 @@ begin
                 if cdsCategorias.RecNo < cdsCategorias.RecordCount then
                   Series := Series + ', ';
 
+                Categorias := Categorias + QuotedStr(cdsCategorias.FieldByName('name').AsString);
+                //Categorias := Categorias + QuotedStr('<div style="white-space: nowrap;text-align:left">' + cdsCategorias.FieldByName('name').AsString + '</div>');
+                //'<div style="background-color:#00BFFF;text-align:center">'
+                if cdsCategorias.RecNo < cdsCategorias.RecordCount then
+                  Categorias := Categorias + ', ';
+
                 cdsCategorias.next;
               end;
+              //exit;
               Self.Script.Text := StringReplace(Self.Script.Text, '%CATEGORIASAUTOMACAO%', Categorias, [rfIgnoreCase, rfReplaceAll]);
               Self.Script.Text := StringReplace(Self.Script.Text, '%DATAAUTOMACAO%', Series, [rfIgnoreCase, rfReplaceAll]);
+
+              //Series.SaveToFile(UniServerModule.LocalCachePath + '\dados.csv');
+              //Series.Text := '[' + Trim(Series.Text) + ']';
+              //Series.SaveToFile(UniServerModule.LocalCachePath + '\dados.json');
+
+              //Self.Script.Text := StringReplace(Self.Script.Text, '%DATAAUTOMACAO%', UniServerModule.LocalCacheURL + 'dados.json', [rfIgnoreCase, rfReplaceAll]);
+              //Self.Script.SaveToFile('c:\teste.txt');
+
 
               if ExecutaRedraw then
               begin
@@ -271,8 +292,10 @@ end;
 procedure TFrmPrincipal.UniFormCreate(Sender: TObject);
 begin
   ScriptOriginal := Self.Script.Text;
+  //Self.Script.Text := StringReplace(Self.Script.Text, '%CATEGORIASAUTOMACAO%', 'teste,teste', [rfIgnoreCase, rfReplaceAll]);
+  //Self.Script.Text := StringReplace(Self.Script.Text, '%DATAAUTOMACAO%', UniServerModule.LocalCacheURL + 'dados.json', [rfIgnoreCase, rfReplaceAll]);
   //Self.Script.Clear;
-  LbAutomacao.Caption := NullAsStringValue;
+  //LbAutomacao.Caption := NullAsStringValue;
   ConsultaDadosTrello(False);
 end;
 
@@ -284,6 +307,11 @@ begin
     if LbAutomacao.Caption <> NullAsStringValue then
       UniSession.AddJS('$(' + QuotedStr('#' + cGRAFICOAUTOMACAO) + ').highcharts().reflow()');
   end;
+end;
+
+procedure TFrmPrincipal.UniTimerTimer(Sender: TObject);
+begin
+  ConsultaDadosTrello(True);
 end;
 
 initialization

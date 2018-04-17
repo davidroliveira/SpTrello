@@ -17,9 +17,16 @@ type
     { Public declarations }
   end;
 
+function UniServerModule: TUniServerModule;
+
 implementation
 
 {$R *.dfm}
+
+function UniServerModule: TUniServerModule;
+begin
+  Result:=TUniServerModule(UniGUIServerInstance);
+end;
 
 procedure TUniServerModule.FirstInit;
 begin

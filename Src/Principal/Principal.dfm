@@ -12,14 +12,14 @@ object FrmPrincipal: TFrmPrincipal
     #9'            '
     #9'    chart: {'
     #9'        polar: true,'
-    #9'        type: '#39'area'#39', '
-    '           downloadCSV: "Download CSV teste"            '
+    #9'        type: '#39'area'#39'           '
     #9'    },'
     #9'    '
     #9'    title: {'
     #9'        //text: '#39'Budget vs spending'#39','
     '           text: '#39'%TITULOAUTOMACAO%'#39','
-    #9'        x: -50'
+    #9'        //x: -50'
+    '           x: 0'
     #9'    },'
     #9'    '
     #9'    pane: {'
@@ -65,7 +65,8 @@ object FrmPrincipal: TFrmPrincipal
     #9'        align: '#39'right'#39','
     #9'        verticalAlign: '#39'top'#39','
     #9'        y: 70,'
-    #9'        layout: '#39'vertical'#39
+    #9'        layout: '#39'vertical'#39','
+    #9#9#9'enabled: false'
     #9'    },'
     #9'    '
     #9'    series: [{'
@@ -73,7 +74,12 @@ object FrmPrincipal: TFrmPrincipal
     
       #9'        //data: [43000, 19000, 60000, 35000, 17000, 10000, 5000' +
       ', 3000, 0, 0],'
-    #9#9#9'  data: [%DATAAUTOMACAO%],'
+    #9#9#9'data: [%DATAAUTOMACAO%],'
+    #9#9#9'//data: {'
+    #9#9#9'//'#9'rowsURL: '#39'%DATAAUTOMACAO%'#39','
+    #9#9#9'//'#9'//csvURL: '#39'%DATAAUTOMACAO%'#39','
+    #9#9#9'//'#9'enablePolling: true'
+    #9#9#9'//},'
     #9'        pointPlacement: '#39'on'#39
     #9'    }/*, {'
     #9'        name: '#39'Actual Spending'#39','
@@ -82,24 +88,6 @@ object FrmPrincipal: TFrmPrincipal
     #9'    }*/]'
     #9
     #9'});'
-    '});'
-    ''
-    '$(function() {'
-    '    Highcharts.setOptions({'
-    '        chart: {'
-    '            backgroundColor: {'
-    '                linearGradient: [0, 0, 500, 500],'
-    '                stops: ['
-    '                    [0, '#39'rgb(255, 255, 255)'#39'],'
-    '                    [1, '#39'rgb(240, 240, 255)'#39']'
-    '                    ]'
-    '            },'
-    '            borderWidth: 2,'
-    '            plotBackgroundColor: '#39'rgba(255, 255, 255, .9)'#39','
-    '            plotShadow: true,'
-    '            plotBorderWidth: 1'
-    '        }'
-    '    });'
     '});')
   MonitoredKeys.Keys = <>
   OnCreate = UniFormCreate
@@ -111,7 +99,7 @@ object FrmPrincipal: TFrmPrincipal
     Width = 709
     Height = 640
     Hint = ''
-    ActivePage = TSGraficoSonarAutomacao
+    ActivePage = TSGraficoSPTrelloAutomacao
     Align = alClient
     Anchors = [akLeft, akTop, akRight, akBottom]
     ClientEvents.ExtEvents.Strings = (
@@ -124,9 +112,9 @@ object FrmPrincipal: TFrmPrincipal
         ');'#13#10'}')
     TabOrder = 0
     OnAjaxEvent = UniPageControl1AjaxEvent
-    object TSGraficoSonarAutomacao: TUniTabSheet
+    object TSGraficoSPTrelloAutomacao: TUniTabSheet
       Hint = ''
-      Caption = 'Gr'#225'fico Sonar Automa'#231#227'o'
+      Caption = 'Gr'#225'fico SPTrello Automa'#231#227'o'
       object LbAutomacao: TUniLabel
         Left = 0
         Top = 35
@@ -154,24 +142,6 @@ object FrmPrincipal: TFrmPrincipal
         BorderStyle = ubsNone
         ShowCaption = False
         Caption = 'UniPanel1'
-        DesignSize = (
-          701
-          35)
-        object BtnAtualizarSonarAutomacao: TUniSpeedButton
-          Left = 590
-          Top = 5
-          Width = 100
-          Height = 25
-          Hint = ''
-          Caption = 'Atualizar'
-          Anchors = [akTop, akRight]
-          ParentColor = False
-          Color = clWindow
-          ScreenMask.Enabled = True
-          ScreenMask.WaitData = True
-          TabOrder = 1
-          OnClick = BtnAtualizarSonarAutomacaoClick
-        end
       end
     end
   end
@@ -212,6 +182,10 @@ object FrmPrincipal: TFrmPrincipal
     Aggregates = <>
     FieldDefs = <
       item
+        Name = 'id'
+        DataType = ftInteger
+      end
+      item
         Name = 'name'
         DataType = ftString
         Size = 1000
@@ -221,6 +195,7 @@ object FrmPrincipal: TFrmPrincipal
         DataType = ftInteger
       end>
     IndexDefs = <>
+    IndexFieldNames = 'id'
     Params = <>
     StoreDefs = True
     Left = 524
@@ -249,5 +224,17 @@ object FrmPrincipal: TFrmPrincipal
     StoreDefs = True
     Left = 516
     Top = 248
+  end
+  object UniTimer: TUniTimer
+    Interval = 5000
+    ChainMode = True
+    ClientEvent.Strings = (
+      'function(sender)'
+      '{'
+      ' '
+      '}')
+    OnTimer = UniTimerTimer
+    Left = 500
+    Top = 32
   end
 end
