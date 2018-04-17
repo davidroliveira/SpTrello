@@ -4,7 +4,8 @@ interface
 
 uses
   Classes, SysUtils, uniGUIServer, uniGUIMainModule, uniGUIApplication,
-  uIdCustomHTTPServer, uniGUITypes, UniGUIVars, Forms;
+  uIdCustomHTTPServer, uniGUITypes, UniGUIVars, Forms, uniGUIBaseClasses,
+  uniGUIClasses;
 
 type
   TUniServerModule = class(TUniGUIServerModule)

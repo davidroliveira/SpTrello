@@ -3,10 +3,12 @@ unit MainModule;
 interface
 
 uses
-  uniGUIMainModule, SysUtils, Classes, UniGUIVars, ServerModule, uniGUIApplication;
+  uniGUIMainModule, SysUtils, Classes, UniGUIVars, ServerModule, uniGUIApplication,
+  uniGUIBaseClasses, uniGUIClasses, uniImageList;
 
 type
   TUniMainModule = class(TUniGUIMainModule)
+    UniImageList: TUniImageList;
   private
     { Private declarations }
   public

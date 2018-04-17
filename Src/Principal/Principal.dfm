@@ -100,6 +100,7 @@ object FrmPrincipal: TFrmPrincipal
     Height = 640
     Hint = ''
     ActivePage = TSGraficoSPTrelloAutomacao
+    Images = UniMainModule.UniImageList
     Align = alClient
     Anchors = [akLeft, akTop, akRight, akBottom]
     ClientEvents.ExtEvents.Strings = (
@@ -114,6 +115,7 @@ object FrmPrincipal: TFrmPrincipal
     OnAjaxEvent = UniPageControl1AjaxEvent
     object TSGraficoSPTrelloAutomacao: TUniTabSheet
       Hint = ''
+      ImageIndex = 0
       Caption = 'Gr'#225'fico SPTrello Automa'#231#227'o'
       object LbAutomacao: TUniLabel
         Left = 0
