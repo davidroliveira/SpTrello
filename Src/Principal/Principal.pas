@@ -128,6 +128,7 @@ var
 begin
   //LbAutomacao.Caption :=
   //ScriptOriginal := Self.Script.Text;
+  UniTimer.Enabled := False;
   OldScript := Self.Script.Text;
   Self.Script.Text := ScriptOriginal;
   try
@@ -345,6 +346,7 @@ begin
     Self.Script.Text := OldScript;
     //LbAutomacao.Caption := NullAsStringValue;
   end;
+  UniTimer.Enabled := True;
 //  cdsCategorias.Close;
 //  cdsSeries.Close;
 end;
