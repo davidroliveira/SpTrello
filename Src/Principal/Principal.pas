@@ -191,6 +191,7 @@ begin
                 oAuthenticator.Key := '7792613d72989f58b30d11e4017ca86d';
                 oAuthenticator.Token := '74fed0ced88cca018486cbf010c441bebcafdbbc55e79365fa2b4098be7d25ee';
 
+                QryQuadros.Close;
                 SpTrelloBoards.Active := False;
                 SpTrelloBoards.SpTrelloAuthenticator := oAuthenticator;
                 SpTrelloBoards.DataSet := QryQuadros;
@@ -202,6 +203,7 @@ begin
 
                 if SpTrelloLists.IdBoard <> SpTrelloBoards.DataSet.FieldByName('id').AsString then
                 begin
+                  QryLista.Close;
                   SpTrelloLists.Active := False;
                   SpTrelloLists.SpTrelloAuthenticator := oAuthenticator;
                   SpTrelloLists.DataSet := QryLista;
@@ -218,13 +220,14 @@ begin
                 cdsSeries.CreateDataSet;
                 cdsSeries.EmptyDataSet;
 
-                if SpTrelloLists.Active then
+                if SpTrelloLists.Active and SpTrelloLists.DataSet.Active then
                 begin
                   SpTrelloLists.DataSet.First;
                   while not SpTrelloLists.DataSet.Eof do
                   begin
                     if SpTrelloCards.IdList <> SpTrelloLists.DataSet.FieldByName('id').AsString then
                     begin
+                      QryCards.Close;
                       SpTrelloCards.Active := False;
                       SpTrelloCards.SpTrelloAuthenticator := oAuthenticator;
                       SpTrelloCards.DataSet := QryCards;
@@ -232,7 +235,7 @@ begin
                       if (not SpTrelloLists.DataSet.FieldByName('id').IsNull) then
                         SpTrelloCards.Active := True;
 
-                      if SpTrelloCards.Active then
+                      if SpTrelloCards.Active and SpTrelloCards.DataSet.Active then
                       begin
                         SpTrelloCards.DataSet.First;
                         while not SpTrelloCards.DataSet.Eof do
@@ -346,6 +349,9 @@ begin
     Self.Script.Text := OldScript;
     //LbAutomacao.Caption := NullAsStringValue;
   end;
+  QryQuadros.Close;
+  QryLista.Close;
+  QryCards.Close;
   UniTimer.Enabled := True;
 //  cdsCategorias.Close;
 //  cdsSeries.Close;
