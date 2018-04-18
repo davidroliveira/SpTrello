@@ -26,7 +26,7 @@ uses
 {$R *.res}
 
 begin
-  ReportMemoryLeaksOnShutdown := True;
+  //ReportMemoryLeaksOnShutdown := True;
   Application.Initialize;
   TUniServerModule.Create(Application);
   Application.Title := 'SpTrello';

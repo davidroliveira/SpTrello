@@ -180,53 +180,6 @@ object FrmPrincipal: TFrmPrincipal
     Left = 232
     Top = 480
   end
-  object cdsCategorias: TClientDataSet
-    Aggregates = <>
-    FieldDefs = <
-      item
-        Name = 'id'
-        DataType = ftInteger
-      end
-      item
-        Name = 'name'
-        DataType = ftString
-        Size = 1000
-      end
-      item
-        Name = 'quantidade'
-        DataType = ftInteger
-      end>
-    IndexDefs = <>
-    IndexFieldNames = 'id'
-    Params = <>
-    StoreDefs = True
-    Left = 524
-    Top = 176
-  end
-  object cdsSeries: TClientDataSet
-    Aggregates = <>
-    FieldDefs = <
-      item
-        Name = 'name'
-        DataType = ftString
-        Size = 1000
-      end
-      item
-        Name = 'lista'
-        DataType = ftString
-        Size = 1000
-      end
-      item
-        Name = 'quantidade'
-        DataType = ftInteger
-      end>
-    IndexDefs = <>
-    IndexFieldNames = 'name;lista'
-    Params = <>
-    StoreDefs = True
-    Left = 516
-    Top = 248
-  end
   object UniTimer: TUniTimer
     Interval = 5000
     ChainMode = True

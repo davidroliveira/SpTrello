@@ -22,8 +22,6 @@ type
     TSGraficoSPTrelloAutomacao: TUniTabSheet;
     LbAutomacao: TUniLabel;
     UniPanel1: TUniPanel;
-    cdsCategorias: TClientDataSet;
-    cdsSeries: TClientDataSet;
     UniTimer: TUniTimer;
     procedure UniPageControl1AjaxEvent(Sender: TComponent; EventName: string;
       Params: TUniStrings);
@@ -70,6 +68,9 @@ var
   RetornoID: Integer;
   Categorias: string;
   Series: string;
+  OldScript: string;
+  cdsCategorias: TClientDataSet;
+  cdsSeries: TClientDataSet;
 
   procedure ValidarCard(const ACard: string; out IdCard: Integer; out NameCard: string);
   var
@@ -127,166 +128,225 @@ var
 begin
   //LbAutomacao.Caption :=
   //ScriptOriginal := Self.Script.Text;
+  OldScript := Self.Script.Text;
   Self.Script.Text := ScriptOriginal;
   try
+    cdsCategorias := TClientDataSet.Create(Self);
     try
-      oAuthenticator := TSpTrelloAuthenticator.Create(self);
+      cdsCategorias.IndexFieldNames := 'id';
+      with cdsCategorias.FieldDefs.AddFieldDef do
+      begin
+        Name := 'id';
+        DataType := ftInteger;
+      end;
+      with cdsCategorias.FieldDefs.AddFieldDef do
+      begin
+        Name := 'name';
+        DataType := ftString;
+        Size := 1000;
+      end;
+      with cdsCategorias.FieldDefs.AddFieldDef do
+      begin
+        Name := 'quantidade';
+        DataType := ftInteger;
+      end;
+
+      cdsCategorias.CreateDataSet;
+      cdsCategorias.Open;
+      cdsSeries := TClientDataSet.Create(Self);
       try
-        SpTrelloBoards := TSpTrelloBoards.Create(self);
+        with cdsSeries.FieldDefs.AddFieldDef do
+        begin
+          Name := 'name';
+          DataType := ftString;
+          Size := 1000;
+        end;
+
+        with cdsSeries.FieldDefs.AddFieldDef do
+        begin
+          Name := 'lista';
+          DataType := ftString;
+          Size := 1000;
+        end;
+
+        with cdsSeries.FieldDefs.AddFieldDef do
+        begin
+          Name := 'quantidade';
+          DataType := ftInteger;
+        end;
+
+        cdsSeries.CreateDataSet;
+        cdsSeries.Open;
         try
-          SpTrelloLists := TSpTrelloLists.Create(self);
+          cdsSeries.IndexFieldNames := 'name;lista';
+          oAuthenticator := TSpTrelloAuthenticator.Create(self);
           try
-            SpTrelloCards := TSpTrelloCards.Create(Self);
-            oAuthenticator.User := 'davidroliveira';
-            oAuthenticator.Key := '7792613d72989f58b30d11e4017ca86d';
-            oAuthenticator.Token := '74fed0ced88cca018486cbf010c441bebcafdbbc55e79365fa2b4098be7d25ee';
+            SpTrelloBoards := TSpTrelloBoards.Create(self);
+            try
+              SpTrelloLists := TSpTrelloLists.Create(self);
+              try
+                SpTrelloCards := TSpTrelloCards.Create(Self);
+                oAuthenticator.User := 'davidroliveira';
+                oAuthenticator.Key := '7792613d72989f58b30d11e4017ca86d';
+                oAuthenticator.Token := '74fed0ced88cca018486cbf010c441bebcafdbbc55e79365fa2b4098be7d25ee';
 
-            SpTrelloBoards.Active := False;
-            SpTrelloBoards.SpTrelloAuthenticator := oAuthenticator;
-            SpTrelloBoards.DataSet := QryQuadros;
-            SpTrelloBoards.Active:= True;
+                SpTrelloBoards.Active := False;
+                SpTrelloBoards.SpTrelloAuthenticator := oAuthenticator;
+                SpTrelloBoards.DataSet := QryQuadros;
+                SpTrelloBoards.Active:= True;
 
-            LbAutomacao.Caption := '<div id="' + cGRAFICOAUTOMACAO + '" style="width: 100%; height: 100%; margin: 0 auto"></div>';
-            Self.Script.Text := StringReplace(Self.Script.Text, '%AUTOMACAO%', cGRAFICOAUTOMACAO, [rfIgnoreCase, rfReplaceAll]);
-            Self.Script.Text := StringReplace(Self.Script.Text, '%TITULOAUTOMACAO%', SpTrelloBoards.DataSet.FieldByName('NAME').AsString, [rfIgnoreCase, rfReplaceAll]);
+                LbAutomacao.Caption := '<div id="' + cGRAFICOAUTOMACAO + '" style="width: 100%; height: 100%; margin: 0 auto"></div>';
+                Self.Script.Text := StringReplace(Self.Script.Text, '%AUTOMACAO%', cGRAFICOAUTOMACAO, [rfIgnoreCase, rfReplaceAll]);
+                Self.Script.Text := StringReplace(Self.Script.Text, '%TITULOAUTOMACAO%', SpTrelloBoards.DataSet.FieldByName('NAME').AsString, [rfIgnoreCase, rfReplaceAll]);
 
-            if SpTrelloLists.IdBoard <> SpTrelloBoards.DataSet.FieldByName('id').AsString then
-            begin
-              SpTrelloLists.Active := False;
-              SpTrelloLists.SpTrelloAuthenticator := oAuthenticator;
-              SpTrelloLists.DataSet := QryLista;
-              SpTrelloLists.IdBoard := SpTrelloBoards.DataSet.FieldByName('id').AsString;
-              if (not SpTrelloBoards.DataSet.FieldByName('id').IsNull) then
-                SpTrelloLists.Active := True;
-            end;
-
-            cdsCategorias.Close;
-            cdsCategorias.CreateDataSet;
-            cdsCategorias.EmptyDataSet;
-
-            cdsSeries.Close;
-            cdsSeries.CreateDataSet;
-            cdsSeries.EmptyDataSet;
-
-            if SpTrelloLists.Active then
-            begin
-              SpTrelloLists.DataSet.First;
-              while not SpTrelloLists.DataSet.Eof do
-              begin
-                if SpTrelloCards.IdList <> SpTrelloLists.DataSet.FieldByName('id').AsString then
+                if SpTrelloLists.IdBoard <> SpTrelloBoards.DataSet.FieldByName('id').AsString then
                 begin
-                  SpTrelloCards.Active := False;
-                  SpTrelloCards.SpTrelloAuthenticator := oAuthenticator;
-                  SpTrelloCards.DataSet := QryCards;
-                  SpTrelloCards.IdList := SpTrelloLists.DataSet.FieldByName('id').AsString;
-                  if (not SpTrelloLists.DataSet.FieldByName('id').IsNull) then
-                    SpTrelloCards.Active := True;
+                  SpTrelloLists.Active := False;
+                  SpTrelloLists.SpTrelloAuthenticator := oAuthenticator;
+                  SpTrelloLists.DataSet := QryLista;
+                  SpTrelloLists.IdBoard := SpTrelloBoards.DataSet.FieldByName('id').AsString;
+                  if (not SpTrelloBoards.DataSet.FieldByName('id').IsNull) then
+                    SpTrelloLists.Active := True;
+                end;
 
-                  if SpTrelloCards.Active then
+                cdsCategorias.Close;
+                cdsCategorias.CreateDataSet;
+                cdsCategorias.EmptyDataSet;
+
+                cdsSeries.Close;
+                cdsSeries.CreateDataSet;
+                cdsSeries.EmptyDataSet;
+
+                if SpTrelloLists.Active then
+                begin
+                  SpTrelloLists.DataSet.First;
+                  while not SpTrelloLists.DataSet.Eof do
                   begin
-                    SpTrelloCards.DataSet.First;
-                    while not SpTrelloCards.DataSet.Eof do
+                    if SpTrelloCards.IdList <> SpTrelloLists.DataSet.FieldByName('id').AsString then
                     begin
-                      //Retorno := ValidarCard(SpTrelloCards.DataSet.FieldByName('name').AsString);
-                      ValidarCard(SpTrelloCards.DataSet.FieldByName('name').AsString, RetornoID, Retorno);
-                      if Retorno <> NullAsStringValue then
-                      begin
-                        if cdsCategorias.Locate('name', Retorno, [loCaseInsensitive]) then
-                          cdsCategorias.Edit
-                        else
-                          cdsCategorias.Insert;
-                        cdsCategorias.FieldByName('id').AsInteger := RetornoID;
-                        cdsCategorias.FieldByName('name').AsString := Retorno;
-                        cdsCategorias.FieldByName('quantidade').AsInteger := cdsCategorias.FieldByName('quantidade').AsInteger + 1;
-                        cdsCategorias.Post;
+                      SpTrelloCards.Active := False;
+                      SpTrelloCards.SpTrelloAuthenticator := oAuthenticator;
+                      SpTrelloCards.DataSet := QryCards;
+                      SpTrelloCards.IdList := SpTrelloLists.DataSet.FieldByName('id').AsString;
+                      if (not SpTrelloLists.DataSet.FieldByName('id').IsNull) then
+                        SpTrelloCards.Active := True;
 
-                        if (SpTrelloLists.DataSet.FieldByName('id').AsString = '5a7de383069219344fe90f93') //SYNCHRONIZE
-                          or (SpTrelloLists.DataSet.FieldByName('id').AsString = '5a25f68d2ef57a7ae5a6099e') then //DONE
+                      if SpTrelloCards.Active then
+                      begin
+                        SpTrelloCards.DataSet.First;
+                        while not SpTrelloCards.DataSet.Eof do
                         begin
-                          if cdsSeries.Locate('name', Retorno, [loCaseInsensitive]) then
-                            cdsSeries.Edit
-                          else
-                            cdsSeries.Insert;
-                          cdsSeries.FieldByName('name').AsString := Retorno;
-                          cdsSeries.FieldByName('quantidade').AsInteger := cdsSeries.FieldByName('quantidade').AsInteger + 1;
-                          cdsSeries.Post;
+                          //Retorno := ValidarCard(SpTrelloCards.DataSet.FieldByName('name').AsString);
+                          ValidarCard(SpTrelloCards.DataSet.FieldByName('name').AsString, RetornoID, Retorno);
+                          if Retorno <> NullAsStringValue then
+                          begin
+                            if cdsCategorias.Locate('name', Retorno, [loCaseInsensitive]) then
+                              cdsCategorias.Edit
+                            else
+                              cdsCategorias.Insert;
+                            cdsCategorias.FieldByName('id').AsInteger := RetornoID;
+                            cdsCategorias.FieldByName('name').AsString := Retorno;
+                            cdsCategorias.FieldByName('quantidade').AsInteger := cdsCategorias.FieldByName('quantidade').AsInteger + 1;
+                            cdsCategorias.Post;
+
+                            if (SpTrelloLists.DataSet.FieldByName('id').AsString = '5a7de383069219344fe90f93') //SYNCHRONIZE
+                              or (SpTrelloLists.DataSet.FieldByName('id').AsString = '5a25f68d2ef57a7ae5a6099e') then //DONE
+                            begin
+                              if cdsSeries.Locate('name', Retorno, [loCaseInsensitive]) then
+                                cdsSeries.Edit
+                              else
+                                cdsSeries.Insert;
+                              cdsSeries.FieldByName('name').AsString := Retorno;
+                              cdsSeries.FieldByName('quantidade').AsInteger := cdsSeries.FieldByName('quantidade').AsInteger + 1;
+                              cdsSeries.Post;
+                            end;
+                          end;
+                          SpTrelloCards.DataSet.Next;
                         end;
                       end;
-                      SpTrelloCards.DataSet.Next;
                     end;
+                    SpTrelloLists.DataSet.Next;
+                  end;
+                  Categorias := NullAsStringValue;
+                  Series := NullAsStringValue;
+                  cdsCategorias.First;
+                  while not cdsCategorias.Eof do
+                  begin
+    //                Categorias := Categorias + QuotedStr(cdsCategorias.FieldByName('name').AsString);
+    //                if cdsCategorias.RecNo < cdsCategorias.RecordCount then
+    //                  Categorias := Categorias + ', ';
+
+                    cdsSeries.First;
+                    if cdsSeries.Locate('name', cdsCategorias.FieldByName('name').AsString, [loCaseInsensitive]) then
+                    begin
+                      FormatSettings.DecimalSeparator := '.';
+                      Series := Series + '{name: ' + QuotedStr(cdsCategorias.FieldByName('name').AsString +
+                        ' Cards: ' + FormatFloat('0', cdsSeries.FieldByName('quantidade').AsInteger) + '/' + FormatFloat('0', cdsCategorias.FieldByName('quantidade').AsInteger)) +
+                        ', y: ' + FormatFloat('0.####', ((cdsSeries.FieldByName('quantidade').AsInteger / cdsCategorias.FieldByName('quantidade').AsInteger) * 100)) + '}';
+                      //Series := Series + FormatFloat('0.####', ((cdsSeries.FieldByName('quantidade').AsInteger / cdsCategorias.FieldByName('quantidade').AsInteger) * 100));
+                      FormatSettings.DecimalSeparator := ',';
+                    end
+                    else
+                      Series := Series + '0';
+
+                    if cdsCategorias.RecNo < cdsCategorias.RecordCount then
+                      Series := Series + ', ';
+
+                    Categorias := Categorias + QuotedStr(cdsCategorias.FieldByName('name').AsString);
+                    //Categorias := Categorias + QuotedStr('<div style="white-space: nowrap;text-align:left">' + cdsCategorias.FieldByName('name').AsString + '</div>');
+                    //'<div style="background-color:#00BFFF;text-align:center">'
+                    if cdsCategorias.RecNo < cdsCategorias.RecordCount then
+                      Categorias := Categorias + ', ';
+
+                    cdsCategorias.next;
+                  end;
+                  //exit;
+                  Self.Script.Text := StringReplace(Self.Script.Text, '%CATEGORIASAUTOMACAO%', Categorias, [rfIgnoreCase, rfReplaceAll]);
+                  Self.Script.Text := StringReplace(Self.Script.Text, '%DATAAUTOMACAO%', Series, [rfIgnoreCase, rfReplaceAll]);
+
+                  //Series.SaveToFile(UniServerModule.LocalCachePath + '\dados.csv');
+                  //Series.Text := '[' + Trim(Series.Text) + ']';
+                  //Series.SaveToFile(UniServerModule.LocalCachePath + '\dados.json');
+
+                  //Self.Script.Text := StringReplace(Self.Script.Text, '%DATAAUTOMACAO%', UniServerModule.LocalCacheURL + 'dados.json', [rfIgnoreCase, rfReplaceAll]);
+                  //Self.Script.SaveToFile('c:\teste.txt');
+
+
+                  if ExecutaRedraw then
+                  begin
+                    UniSession.AddJS('$(' + QuotedStr('#' + cGRAFICOAUTOMACAO) + ').highcharts().series[0].setData([' + Series + '],false);');
+                    UniSession.AddJS('$(' + QuotedStr('#' + cGRAFICOAUTOMACAO) + ').highcharts().redraw();');
                   end;
                 end;
-                SpTrelloLists.DataSet.Next;
+              finally
+                FreeAndNil(SpTrelloCards);
               end;
-              Categorias := NullAsStringValue;
-              Series := NullAsStringValue;
-              cdsCategorias.First;
-              while not cdsCategorias.Eof do
-              begin
-//                Categorias := Categorias + QuotedStr(cdsCategorias.FieldByName('name').AsString);
-//                if cdsCategorias.RecNo < cdsCategorias.RecordCount then
-//                  Categorias := Categorias + ', ';
-
-                cdsSeries.First;
-                if cdsSeries.Locate('name', cdsCategorias.FieldByName('name').AsString, [loCaseInsensitive]) then
-                begin
-                  FormatSettings.DecimalSeparator := '.';
-                  Series := Series + '{name: ' + QuotedStr(cdsCategorias.FieldByName('name').AsString +
-                    ' Cards: ' + FormatFloat('0', cdsSeries.FieldByName('quantidade').AsInteger) + '/' + FormatFloat('0', cdsCategorias.FieldByName('quantidade').AsInteger)) +
-                    ', y: ' + FormatFloat('0.####', ((cdsSeries.FieldByName('quantidade').AsInteger / cdsCategorias.FieldByName('quantidade').AsInteger) * 100)) + '}';
-                  //Series := Series + FormatFloat('0.####', ((cdsSeries.FieldByName('quantidade').AsInteger / cdsCategorias.FieldByName('quantidade').AsInteger) * 100));
-                  FormatSettings.DecimalSeparator := ',';
-                end
-                else
-                  Series := Series + '0';
-
-                if cdsCategorias.RecNo < cdsCategorias.RecordCount then
-                  Series := Series + ', ';
-
-                Categorias := Categorias + QuotedStr(cdsCategorias.FieldByName('name').AsString);
-                //Categorias := Categorias + QuotedStr('<div style="white-space: nowrap;text-align:left">' + cdsCategorias.FieldByName('name').AsString + '</div>');
-                //'<div style="background-color:#00BFFF;text-align:center">'
-                if cdsCategorias.RecNo < cdsCategorias.RecordCount then
-                  Categorias := Categorias + ', ';
-
-                cdsCategorias.next;
-              end;
-              //exit;
-              Self.Script.Text := StringReplace(Self.Script.Text, '%CATEGORIASAUTOMACAO%', Categorias, [rfIgnoreCase, rfReplaceAll]);
-              Self.Script.Text := StringReplace(Self.Script.Text, '%DATAAUTOMACAO%', Series, [rfIgnoreCase, rfReplaceAll]);
-
-              //Series.SaveToFile(UniServerModule.LocalCachePath + '\dados.csv');
-              //Series.Text := '[' + Trim(Series.Text) + ']';
-              //Series.SaveToFile(UniServerModule.LocalCachePath + '\dados.json');
-
-              //Self.Script.Text := StringReplace(Self.Script.Text, '%DATAAUTOMACAO%', UniServerModule.LocalCacheURL + 'dados.json', [rfIgnoreCase, rfReplaceAll]);
-              //Self.Script.SaveToFile('c:\teste.txt');
-
-
-              if ExecutaRedraw then
-              begin
-                UniSession.AddJS('$(' + QuotedStr('#' + cGRAFICOAUTOMACAO) + ').highcharts().series[0].setData([' + Series + '],false);');
-                UniSession.AddJS('$(' + QuotedStr('#' + cGRAFICOAUTOMACAO) + ').highcharts().redraw();');
-              end;
+            finally
+              FreeAndNil(SpTrelloLists);
             end;
           finally
-            FreeAndNil(SpTrelloCards);
+            FreeAndNil(SpTrelloBoards);
           end;
         finally
-          FreeAndNil(SpTrelloLists);
+          FreeAndNil(oAuthenticator);
         end;
+        cdsSeries.EmptyDataSet;
+        cdsSeries.Close;
       finally
-        FreeAndNil(SpTrelloBoards);
+        FreeAndNil(cdsSeries);
       end;
+      cdsCategorias.EmptyDataSet;
+      cdsCategorias.Close;
     finally
-      FreeAndNil(oAuthenticator);
+      FreeAndNil(cdsCategorias);
     end;
   except
-    Self.Script.Clear;
-    LbAutomacao.Caption := NullAsStringValue;
+    //Self.Script.Clear;
+    Self.Script.Text := OldScript;
+    //LbAutomacao.Caption := NullAsStringValue;
   end;
-  cdsCategorias.Close;
-  cdsSeries.Close;
+//  cdsCategorias.Close;
+//  cdsSeries.Close;
 end;
 
 procedure TFrmPrincipal.UniFormCreate(Sender: TObject);

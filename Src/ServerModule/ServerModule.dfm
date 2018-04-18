@@ -2,6 +2,7 @@ object UniServerModule: TUniServerModule
   OldCreateOrder = False
   OnCreate = UniGUIServerModuleCreate
   TempFolder = 'temp\'
+  SessionTimeout = 60000000
   Title = 'New Application'
   SuppressErrors = []
   Bindings = <>
@@ -33,7 +34,9 @@ object UniServerModule: TUniServerModule
   SSL.SSLOptions.Mode = sslmUnassigned
   SSL.SSLOptions.VerifyMode = []
   SSL.SSLOptions.VerifyDepth = 0
-  Options = [soAutoPlatformSwitch, soWipeShadowSessions]
+  Options = [soAutoPlatformSwitch, soRestartSessionOnTimeout, soWipeShadowSessions]
+  ConnectionFailureRecovery.DetailedLog = True
+  ConnectionFailureRecovery.FullSequenceLog = True
   ConnectionFailureRecovery.ErrorMessage = 'Connection Error'
   ConnectionFailureRecovery.RetryMessage = 'Retrying...'
   Height = 150
