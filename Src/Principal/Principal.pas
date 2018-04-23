@@ -115,7 +115,7 @@ var
       if (ContaInicio = 2) and (ContaFim < 2) and (ACard[j] <> '[') then
         NameCard := NameCard + ACard[j];
     end;
-    Valido := (ContaInicio in [4,6]) and (ContaFim = ContaInicio) and (not ParouPorErro);
+    Valido := (ContaInicio in [3,4,6]) and (ContaFim = ContaInicio) and (not ParouPorErro);
     if not Valido then
       NameCard := NullAsStringValue
     else
