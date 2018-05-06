@@ -15,11 +15,12 @@ type
     property AccessUser: string read FAccessUser write SetAccessUser;
   end;
 
-  TCoreSpTrelloAuthenticator = class(TComponent)
+  //TCoreSpTrelloAuthenticator = class(TComponent)
+  TCoreSpTrelloAuthenticator = class
   private
-    class var SpTrelloAuthenticator: TCoreSpTrelloAuthenticator;
+    //class var SpTrelloAuthenticator: TCoreSpTrelloAuthenticator;
   public
-    class function Instance: TCoreSpTrelloAuthenticator;
+    //class function Instance: TCoreSpTrelloAuthenticator;
     function Authenticator(const psAccessToken, psConsumerKey,
       psAccessUser: string): TCoreSpTrelloOAuth1Authenticator;
   end;
@@ -31,18 +32,18 @@ implementation
 function TCoreSpTrelloAuthenticator.authenticator(const psAccessToken,
   psConsumerKey, psAccessUser: string): TCoreSpTrelloOAuth1Authenticator;
 begin
-  Result:= TCoreSpTrelloOAuth1Authenticator.Create(Self);
-  Result.AccessToken:= psAccessToken;
-  Result.ConsumerKey:= psConsumerKey;
-  Result.AccessUser:= psAccessUser;
+  Result := TCoreSpTrelloOAuth1Authenticator.Create(nil);
+  Result.AccessToken := psAccessToken;
+  Result.ConsumerKey := psConsumerKey;
+  Result.AccessUser := psAccessUser;
 end;
 
-class function TCoreSpTrelloAuthenticator.Instance: TCoreSpTrelloAuthenticator;
-begin
-  if (SpTrelloAuthenticator = nil) then
-    SpTrelloAuthenticator := TCoreSpTrelloAuthenticator.Create(nil);
-  Result := SpTrelloAuthenticator;
-end;
+//class function TCoreSpTrelloAuthenticator.Instance: TCoreSpTrelloAuthenticator;
+//begin
+//  if (SpTrelloAuthenticator = nil) then
+//    SpTrelloAuthenticator := TCoreSpTrelloAuthenticator.Create;
+//  Result := SpTrelloAuthenticator;
+//end;
 
 { TCoreSpTrelloOAuth1Authenticator }
 
@@ -51,12 +52,12 @@ begin
   FAccessUser := Value;
 end;
 
-initialization
-  TCoreSpTrelloAuthenticator.SpTrelloAuthenticator := nil;
-
-finalization
-  if (TCoreSpTrelloAuthenticator.SpTrelloAuthenticator <> nil) then
-    FreeAndNil(TCoreSpTrelloAuthenticator.SpTrelloAuthenticator);
+//initialization
+//  TCoreSpTrelloAuthenticator.SpTrelloAuthenticator := nil;
+//
+//finalization
+//  if (TCoreSpTrelloAuthenticator.SpTrelloAuthenticator <> nil) then
+//    FreeAndNil(TCoreSpTrelloAuthenticator.SpTrelloAuthenticator);
 
 end.
 

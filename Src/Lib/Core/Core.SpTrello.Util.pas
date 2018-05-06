@@ -22,7 +22,10 @@ var
 begin
   Self.Close;
   if Value.content = '[]' then
+  begin
+    Value.Free;
     Exit;
+  end;
   oRESTResponseDataSetAdapter:= TRESTResponseDataSetAdapter.Create(nil);
   try
     oRESTResponseDataSetAdapter.Dataset:= Self;
@@ -32,6 +35,7 @@ begin
   finally
     FreeAndNil(oRESTResponseDataSetAdapter);
   end;
+  Value.Free;
 end;
 
 end.

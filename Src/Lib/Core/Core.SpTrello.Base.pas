@@ -25,7 +25,6 @@ type
     procedure SetId(oAuthenticator: TSpTrelloAuthenticator);
   public
     constructor Create(const oAuthenticator: TSpTrelloAuthenticator); virtual;
-    destructor Destroy; override;
     property EndPoint: string read GetEndPoint write SetEndPoint;
     function Request(const ARequestMethod: TRESTRequestMethod;
       const AUrl: string; const AParams: array of TJSONPair): TRESTResponse;
@@ -44,21 +43,8 @@ uses System.StrUtils, Core.SpTrello.RestClient, Core.SpTrello.RestRequest,
 constructor TCoreSpTrelloBase.Create(const oAuthenticator: TSpTrelloAuthenticator);
 begin
   inherited Create;
-  if FSpAuthenticator = nil then
-    //FSpAuthenticator:= TSpTrelloAuthenticator.Create(nil);
-    FSpAuthenticator:= TSpTrelloAuthenticator.Create;
-
-  FSpAuthenticator.User:= oAuthenticator.User;
-  FSpAuthenticator.Key:= oAuthenticator.Key;
-  FSpAuthenticator.Token:= oAuthenticator.Token;
+  FSpAuthenticator := oAuthenticator;
   SetId(FSpAuthenticator);
-end;
-
-destructor TCoreSpTrelloBase.Destroy;
-begin
-  if FSpAuthenticator <> nil then
-    FreeAndNil(FSpAuthenticator);
-  inherited;
 end;
 
 function TCoreSpTrelloBase.GetEndPoint: string;
@@ -72,20 +58,59 @@ var
   loRESTClient: TRESTClient;
   loOAuth1Authenticator: TOAuth1Authenticator;
   loRESTRequest: TRESTRequest;
+
+  CoreSpTrelloRestClient: TCoreSpTrelloRestClient;
+  CoreSpTrelloAuthenticator: TCoreSpTrelloAuthenticator;
+  CoreSpTrelloRestResponse: TCoreSpTrelloRestResponse;
+  CoreSpTrelloRestRequest: TCoreSpTrelloRestRequest;
 begin
   Result:= nil;
   try
-    loRESTClient:= TCoreSpTrelloRestClient.Instance.RestClient;
-    loRESTClient.BaseURL:= AUrl;
-    loOAuth1Authenticator:= TCoreSpTrelloAuthenticator.Instance.Authenticator(
-      SpAuthenticator.Token, SpAuthenticator.Key, SpAuthenticator.User);
-    loRESTClient.Authenticator:= loOAuth1Authenticator;
-    Result:= TCoreSpTrelloRestResponse.Instance.RestResponse;
-    loRESTRequest:= TCoreSpTrelloRestRequest.Instance.RestClient(AParams);
-    loRESTRequest.Method:= ARequestMethod;
-    loRESTRequest.Client:= loRESTClient;
-    loRESTRequest.Response:= Result;
-    loRESTRequest.Execute;
+    CoreSpTrelloRestClient := TCoreSpTrelloRestClient.Create;
+    try
+      loRESTClient := CoreSpTrelloRestClient.RestClient;
+      try
+        //loRESTClient := TCoreSpTrelloRestClient.Instance.RestClient;
+        loRESTClient.BaseURL := AUrl;
+
+        //loOAuth1Authenticator := TCoreSpTrelloAuthenticator.Instance.Authenticator(SpAuthenticator.Token, SpAuthenticator.Key, SpAuthenticator.User);
+        CoreSpTrelloAuthenticator := TCoreSpTrelloAuthenticator.Create;
+        try
+          loOAuth1Authenticator := CoreSpTrelloAuthenticator.Authenticator(SpAuthenticator.Token, SpAuthenticator.Key, SpAuthenticator.User);
+          try
+            loRESTClient.Authenticator := loOAuth1Authenticator;
+
+            CoreSpTrelloRestResponse := TCoreSpTrelloRestResponse.Create;
+            try
+              //Result := TCoreSpTrelloRestResponse.Instance.RestResponse;
+              Result := CoreSpTrelloRestResponse.RestResponse;
+
+              CoreSpTrelloRestRequest := TCoreSpTrelloRestRequest.Create;
+              try
+                //loRESTRequest := TCoreSpTrelloRestRequest.Instance.RestClient(AParams);
+                loRESTRequest := CoreSpTrelloRestRequest.RestClient(AParams);
+                loRESTRequest.Method := ARequestMethod;
+                loRESTRequest.Client := loRESTClient;
+                loRESTRequest.Response := Result;
+                loRESTRequest.Execute;
+              finally
+                FreeAndNil(CoreSpTrelloRestRequest);
+              end;
+            finally
+              FreeAndNil(CoreSpTrelloRestResponse);
+            end;
+          finally
+            FreeAndNil(loOAuth1Authenticator);
+          end;
+        finally
+          FreeAndNil(CoreSpTrelloAuthenticator);
+        end;
+      finally
+        FreeAndNil(loRESTClient);
+      end;
+    finally
+      FreeAndNil(CoreSpTrelloRestClient);
+    end;
   except
     raise;
   end;
@@ -108,9 +133,9 @@ begin
   loTable:= TFDMemTable.Create(nil);
   try
     loTable.DataInJson(
-    Request(TRESTRequestMethod.rmGET,
-      Format('%s/members/%s', [TCoreSpTrelloConstants.BaseUrl, oAuthenticator.User]),
-      []));
+      Request(TRESTRequestMethod.rmGET,
+        Format('%s/members/%s', [TCoreSpTrelloConstants.BaseUrl, oAuthenticator.User]),
+        []));
     oAuthenticator.Id:= loTable.FieldByName('id').AsString;
   finally
     FreeAndNil(loTable);

@@ -151,22 +151,25 @@ begin
 //        procedure
 //        begin
 //          with Ttrello_boards.Create(FIdOrganization, FSpAuthenticator) do
+
           with TCoreSpTrelloBoards.Create(FSpAuthenticator) do
           begin
-            if FDataSet <> nil then
-              FDataSet.DisableControls;
-            try
-              FDataSet.DataInJson(Get([]));
-            finally
-              if FDataSet <> nil then
-              begin
-                if FDataSet.Active then
-                FDataSet.First;
-                FDataSet.EnableControls;
-              end;
+//            if FDataSet <> nil then
+//              FDataSet.DisableControls;
+//            try
+//              FDataSet.DataInJson(Get([]));
+//            finally
+//              if FDataSet <> nil then
+//              begin
+//                if FDataSet.Active then
+//                  FDataSet.First;
+//                FDataSet.EnableControls;
+//              end;
               Free;
-            end;
+//            end;
           end;
+
+
 //        end);
 //      end
 //    );

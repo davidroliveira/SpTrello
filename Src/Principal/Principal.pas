@@ -222,22 +222,30 @@ begin
 //        end;
 //        TblSeries.CreateDataSet;
         TblSeries.Open;
+        oAuthenticator := TSpTrelloAuthenticator.Create;
         try
           TblSeries.IndexFieldNames := 'name;lista';
           //oAuthenticator := TSpTrelloAuthenticator.Create(self);
-          oAuthenticator := TSpTrelloAuthenticator.Create;
+          //oAuthenticator := TSpTrelloAuthenticator.Create;
+          oAuthenticator.User := 'davidroliveira';
+          oAuthenticator.Key := '7792613d72989f58b30d11e4017ca86d';
+          oAuthenticator.Token := '74fed0ced88cca018486cbf010c441bebcafdbbc55e79365fa2b4098be7d25ee';
+
+          SpTrelloBoards := TSpTrelloBoards.Create;
           try
             //SpTrelloBoards := TSpTrelloBoards.Create(self);
-            SpTrelloBoards := TSpTrelloBoards.Create;
+            //SpTrelloBoards := TSpTrelloBoards.Create;
+            SpTrelloLists := TSpTrelloLists.Create;
             try
               //SpTrelloLists := TSpTrelloLists.Create(self);
-              SpTrelloLists := TSpTrelloLists.Create;
+              //SpTrelloLists := TSpTrelloLists.Create;
+              SpTrelloCards := TSpTrelloCards.Create;
               try
                 //SpTrelloCards := TSpTrelloCards.Create(Self);
-                SpTrelloCards := TSpTrelloCards.Create;
-                oAuthenticator.User := 'davidroliveira';
-                oAuthenticator.Key := '7792613d72989f58b30d11e4017ca86d';
-                oAuthenticator.Token := '74fed0ced88cca018486cbf010c441bebcafdbbc55e79365fa2b4098be7d25ee';
+                //SpTrelloCards := TSpTrelloCards.Create;
+                //oAuthenticator.User := 'davidroliveira';
+                //oAuthenticator.Key := '7792613d72989f58b30d11e4017ca86d';
+                //oAuthenticator.Token := '74fed0ced88cca018486cbf010c441bebcafdbbc55e79365fa2b4098be7d25ee';
 
                 if QryQuadros.Active then
                   QryQuadros.EmptyDataSet;
@@ -379,16 +387,20 @@ begin
 //                  end;
 //                end;
               finally
-                FreeAndNil(SpTrelloCards);
+                //FreeAndNil(SpTrelloCards);
+                SpTrelloCards.Free;
               end;
             finally
-              FreeAndNil(SpTrelloLists);
+              //FreeAndNil(SpTrelloLists);
+              SpTrelloLists.Free;
             end;
           finally
-            FreeAndNil(SpTrelloBoards);
+            //FreeAndNil(SpTrelloBoards);
+            SpTrelloBoards.Free;
           end;
         finally
-          FreeAndNil(oAuthenticator);
+          //FreeAndNil(oAuthenticator);
+          oAuthenticator.Free;
         end;
         TblSeries.EmptyDataSet;
         TblSeries.Close;
