@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Classes;
 
 type
-  TSpTrelloAuthenticator = class(TComponent)
+  //TSpTrelloAuthenticator = class(TComponent)
+  TSpTrelloAuthenticator = class
   strict private
     FKey: string;
     FToken: string;

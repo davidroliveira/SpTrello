@@ -28,7 +28,7 @@ begin
     oRESTResponseDataSetAdapter.Dataset:= Self;
     oRESTResponseDataSetAdapter.Response:= Value;
     if AOpen then
-    Self.Open;
+      Self.Open;
   finally
     FreeAndNil(oRESTResponseDataSetAdapter);
   end;

@@ -20,10 +20,12 @@ object FrmPrincipal: TFrmPrincipal
     '           text: '#39'%TITULOAUTOMACAO%'#39','
     #9'        //x: -50'
     '           x: 0'
+    '           '
     #9'    },'
     #9'    '
     #9'    pane: {'
-    #9'    '#9'size: '#39'80%'#39
+    #9'    '#9'//size: '#39'80%'#39
+    '         size: '#39'90%'#39
     #9'    },'
     #9'    '
     #9'    xAxis: {'
@@ -66,7 +68,7 @@ object FrmPrincipal: TFrmPrincipal
     #9'        verticalAlign: '#39'top'#39','
     #9'        y: 70,'
     #9'        layout: '#39'vertical'#39','
-    #9#9#9'enabled: false'
+    #9'        enabled: false'
     #9'    },'
     #9'    '
     #9'    series: [{'
@@ -95,9 +97,9 @@ object FrmPrincipal: TFrmPrincipal
   TextHeight = 13
   object UniPageControl1: TUniPageControl
     Left = 0
-    Top = 0
+    Top = 55
     Width = 709
-    Height = 640
+    Height = 585
     Hint = ''
     ActivePage = TSGraficoSPTrelloAutomacao
     Images = UniMainModule.UniImageList
@@ -113,15 +115,18 @@ object FrmPrincipal: TFrmPrincipal
         ');'#13#10'}')
     TabOrder = 0
     OnAjaxEvent = UniPageControl1AjaxEvent
+    ExplicitTop = 0
+    ExplicitHeight = 640
     object TSGraficoSPTrelloAutomacao: TUniTabSheet
       Hint = ''
       ImageIndex = 0
       Caption = 'Gr'#225'fico SPTrello Automa'#231#227'o'
+      ExplicitHeight = 612
       object LbAutomacao: TUniLabel
         Left = 0
         Top = 35
         Width = 701
-        Height = 577
+        Height = 522
         Hint = ''
         TextConversion = txtHTML
         AutoSize = False
@@ -131,6 +136,7 @@ object FrmPrincipal: TFrmPrincipal
         ParentColor = False
         Color = clLime
         TabOrder = 0
+        ExplicitHeight = 577
       end
       object UniPanel1: TUniPanel
         Left = 0
@@ -145,6 +151,36 @@ object FrmPrincipal: TFrmPrincipal
         ShowCaption = False
         Caption = 'UniPanel1'
       end
+    end
+  end
+  object UniPanel2: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 709
+    Height = 55
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 1
+    Caption = 'UniPanel2'
+    object UniButton1: TUniButton
+      Left = 16
+      Top = 12
+      Width = 75
+      Height = 25
+      Hint = ''
+      Caption = 'UniButton1'
+      TabOrder = 1
+      OnClick = UniButton1Click
+    end
+    object UniLabel1: TUniLabel
+      Left = 158
+      Top = 12
+      Width = 46
+      Height = 13
+      Hint = ''
+      Caption = 'UniLabel1'
+      TabOrder = 2
     end
   end
   object QryQuadros: TFDMemTable
@@ -191,5 +227,70 @@ object FrmPrincipal: TFrmPrincipal
     OnTimer = UniTimerTimer
     Left = 500
     Top = 32
+  end
+  object UniTimer1: TUniTimer
+    ClientEvent.Strings = (
+      'function(sender)'
+      '{'
+      ' '
+      '}')
+    OnTimer = UniTimer1Timer
+    Left = 398
+    Top = 20
+  end
+  object TblCategorias: TFDMemTable
+    FieldDefs = <
+      item
+        Name = 'id'
+        DataType = ftInteger
+      end
+      item
+        Name = 'name'
+        DataType = ftString
+        Size = 1000
+      end
+      item
+        Name = 'quantidade'
+        DataType = ftInteger
+      end>
+    IndexDefs = <>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
+    Left = 344
+    Top = 145
+  end
+  object TblSeries: TFDMemTable
+    FieldDefs = <
+      item
+        Name = 'name'
+        DataType = ftString
+        Size = 1000
+      end
+      item
+        Name = 'lista'
+        DataType = ftString
+        Size = 1000
+      end
+      item
+        Name = 'quantidade'
+        DataType = ftInteger
+      end>
+    IndexDefs = <>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
+    Left = 342
+    Top = 205
   end
 end

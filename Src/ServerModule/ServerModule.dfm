@@ -2,7 +2,6 @@ object UniServerModule: TUniServerModule
   OldCreateOrder = False
   OnCreate = UniGUIServerModuleCreate
   TempFolder = 'temp\'
-  SessionTimeout = 60000000
   Title = 'New Application'
   SuppressErrors = []
   Bindings = <>

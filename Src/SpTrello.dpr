@@ -2,7 +2,6 @@ program SpTrello;
 
 uses
   Forms,
-  Midaslib,
   ServerModule in 'ServerModule\ServerModule.pas' {UniServerModule: TUniGUIServerModule},
   MainModule in 'MainModule\MainModule.pas' {UniMainModule: TUniGUIMainModule},
   Principal in 'Principal\Principal.pas' {FrmPrincipal: TUniForm},
@@ -26,7 +25,7 @@ uses
 {$R *.res}
 
 begin
-  //ReportMemoryLeaksOnShutdown := True;
+  ReportMemoryLeaksOnShutdown := True;
   Application.Initialize;
   TUniServerModule.Create(Application);
   Application.Title := 'SpTrello';

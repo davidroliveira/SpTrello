@@ -7,7 +7,8 @@ uses
   FireDAC.Comp.Client, Data.DB;
 
 type
-  TSpTrelloBoards = class(TComponent)
+  //TSpTrelloBoards = class(TComponent)
+  TSpTrelloBoards = class
   private
     FSpAuthenticator: TSpTrelloAuthenticator;
     FDataSet: TFDMemTable;
@@ -16,8 +17,8 @@ type
     procedure SetSpAuthenticator(const Value: TSpTrelloAuthenticator);
     procedure SetDataSet(const Value: TFDMemTable);
   protected
-    procedure Notification(AComponent: TComponent;
-      Operation: TOperation); override;
+    //procedure Notification(AComponent: TComponent;
+    //  Operation: TOperation); override;
   public
     function Insert(const AName: string): Boolean;
     procedure Refresh;
@@ -99,14 +100,14 @@ begin
   end;
 end;
 
-procedure TSpTrelloBoards.Notification(AComponent: TComponent; Operation: TOperation);
-begin
-  inherited Notification(AComponent, Operation);
-  if (Operation = opRemove) and (AComponent = FSpAuthenticator)
-    then FSpAuthenticator := nil;
-  if (Operation = opRemove) and (AComponent = FDataSet)
-    then FDataSet := nil;
-end;
+//procedure TSpTrelloBoards.Notification(AComponent: TComponent; Operation: TOperation);
+//begin
+//  inherited Notification(AComponent, Operation);
+//  if (Operation = opRemove) and (AComponent = FSpAuthenticator)
+//    then FSpAuthenticator := nil;
+//  if (Operation = opRemove) and (AComponent = FDataSet)
+//    then FDataSet := nil;
+//end;
 
 procedure TSpTrelloBoards.Refresh;
 var

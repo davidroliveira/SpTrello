@@ -45,7 +45,9 @@ constructor TCoreSpTrelloBase.Create(const oAuthenticator: TSpTrelloAuthenticato
 begin
   inherited Create;
   if FSpAuthenticator = nil then
-    FSpAuthenticator:= TSpTrelloAuthenticator.Create(nil);
+    //FSpAuthenticator:= TSpTrelloAuthenticator.Create(nil);
+    FSpAuthenticator:= TSpTrelloAuthenticator.Create;
+
   FSpAuthenticator.User:= oAuthenticator.User;
   FSpAuthenticator.Key:= oAuthenticator.Key;
   FSpAuthenticator.Token:= oAuthenticator.Token;
