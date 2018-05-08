@@ -145,8 +145,8 @@ begin
             if FDataSet <> nil then
               FDataSet.DisableControls;
             try
+              RESTResponse := Get([]);
               try
-                RESTResponse := Get([]);
                 FDataSet.DataInJson(RESTResponse);
               finally
                 RESTResponse.Free;

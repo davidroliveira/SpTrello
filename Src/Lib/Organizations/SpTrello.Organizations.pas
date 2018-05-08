@@ -120,6 +120,7 @@ end;
 procedure TSpTrelloOrganizations.SetActive(const Value: Boolean);
 var
   oTask: ITask;
+  RESTResponse: TRESTResponse;
 begin
   FActive := Value;
   if FActive then
@@ -138,7 +139,12 @@ begin
             if FDataSet <> nil then
               FDataSet.DisableControls;
             try
-              FDataSet.DataInJson(Get([]));
+              RESTResponse := Get([]);
+              try
+                FDataSet.DataInJson(RESTResponse);
+              finally
+                RESTResponse.Free;
+              end;
             finally
               if FDataSet <> nil then
               begin
