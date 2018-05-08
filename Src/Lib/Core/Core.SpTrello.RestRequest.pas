@@ -7,13 +7,8 @@ uses
   REST.Client, system.JSON, REST.Types;
 
 type
-  //TCoreSpTrelloRestRequest = class(TComponent)
   TCoreSpTrelloRestRequest = class
-  private
-    //class var SpTrelloRestRequest: TCoreSpTrelloRestRequest;
   public
-    //destructor Destroy; override;
-    //class function Instance: TCoreSpTrelloRestRequest;
     function RestClient(const AParams: array of TJSONPair): TRESTRequest;
   end;
 
@@ -21,25 +16,13 @@ implementation
 
 { TCoreSpTrelloRestRequest }
 
-//destructor TCoreSpTrelloRestRequest.Destroy;
-//begin
-//  inherited;
-//end;
-
-//class function TCoreSpTrelloRestRequest.Instance: TCoreSpTrelloRestRequest;
-//begin
-//  if (SpTrelloRestRequest = nil) then
-//    SpTrelloRestRequest := TCoreSpTrelloRestRequest.Create;
-//  Result := SpTrelloRestRequest;
-//end;
-
 function TCoreSpTrelloRestRequest.RestClient(
   const AParams: array of TJSONPair): TRESTRequest;
 var
   nContador: Integer;
 begin
-  Result:= TRESTRequest.Create(nil);
-  Result.SynchronizedEvents:= False;
+  Result := TRESTRequest.Create(nil);
+  Result.SynchronizedEvents := False;
   for nContador := 0 to High(AParams) do
   begin
     Result.AddParameter(StringReplace(AParams[nContador].JsonString.ToString, '"','', [rfReplaceAll, rfIgnoreCase]),
@@ -49,13 +32,6 @@ begin
   for nContador := High(AParams) downto 0 do
     AParams[nContador].Free;
 end;
-
-//initialization
-//  TCoreSpTrelloRestRequest.SpTrelloRestRequest := nil;
-//
-//finalization
-//  if (TCoreSpTrelloRestRequest.SpTrelloRestRequest <> nil) then
-//    FreeAndNil(TCoreSpTrelloRestRequest.SpTrelloRestRequest);
 
 end.
 

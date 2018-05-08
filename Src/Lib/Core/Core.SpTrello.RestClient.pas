@@ -7,26 +7,14 @@ uses
   REST.Client;
 
 type
-  //TCoreSpTrelloRestClient = class(TComponent)
   TCoreSpTrelloRestClient = class
-  private
-    //class var SpTrelloRestClient: TCoreSpTrelloRestClient;
   public
-    //class function Instance: TCoreSpTrelloRestClient;
-    //function RestClient: TRESTClient;
     function RestClient: TRESTClient;
   end;
 
 implementation
 
 { TCoreSpTrelloRestClient }
-
-//class function TCoreSpTrelloRestClient.Instance: TCoreSpTrelloRestClient;
-//begin
-//  if (SpTrelloRestClient = nil) then
-//    SpTrelloRestClient := TCoreSpTrelloRestClient.Create;
-//  Result := SpTrelloRestClient;
-//end;
 
 function TCoreSpTrelloRestClient.RestClient: TRESTClient;
 begin
@@ -36,13 +24,6 @@ begin
   Result.HandleRedirects := True;
   Result.RaiseExceptionOn500 := False;
 end;
-
-//initialization
-//  TCoreSpTrelloRestClient.SpTrelloRestClient := nil;
-//
-//finalization
-//  if (TCoreSpTrelloRestClient.SpTrelloRestClient <> nil) then
-//    FreeAndNil(TCoreSpTrelloRestClient.SpTrelloRestClient);
 
 end.
 

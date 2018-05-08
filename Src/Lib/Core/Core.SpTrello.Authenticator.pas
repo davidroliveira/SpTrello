@@ -15,12 +15,8 @@ type
     property AccessUser: string read FAccessUser write SetAccessUser;
   end;
 
-  //TCoreSpTrelloAuthenticator = class(TComponent)
   TCoreSpTrelloAuthenticator = class
-  private
-    //class var SpTrelloAuthenticator: TCoreSpTrelloAuthenticator;
   public
-    //class function Instance: TCoreSpTrelloAuthenticator;
     function Authenticator(const psAccessToken, psConsumerKey,
       psAccessUser: string): TCoreSpTrelloOAuth1Authenticator;
   end;
@@ -38,26 +34,12 @@ begin
   Result.AccessUser := psAccessUser;
 end;
 
-//class function TCoreSpTrelloAuthenticator.Instance: TCoreSpTrelloAuthenticator;
-//begin
-//  if (SpTrelloAuthenticator = nil) then
-//    SpTrelloAuthenticator := TCoreSpTrelloAuthenticator.Create;
-//  Result := SpTrelloAuthenticator;
-//end;
-
 { TCoreSpTrelloOAuth1Authenticator }
 
 procedure TCoreSpTrelloOAuth1Authenticator.SetAccessUser(const Value: string);
 begin
   FAccessUser := Value;
 end;
-
-//initialization
-//  TCoreSpTrelloAuthenticator.SpTrelloAuthenticator := nil;
-//
-//finalization
-//  if (TCoreSpTrelloAuthenticator.SpTrelloAuthenticator <> nil) then
-//    FreeAndNil(TCoreSpTrelloAuthenticator.SpTrelloAuthenticator);
 
 end.
 

@@ -171,7 +171,7 @@ var
   end;
 
 begin
-  //LbAutomacao.Caption :=
+  //LbAutomacao.Caption := 
   //ScriptOriginal := Self.Script.Text;
   UniTimer.Enabled := False;
   OldScript := Self.Script.Text;
@@ -253,7 +253,7 @@ begin
                 SpTrelloBoards.Active := False;
                 SpTrelloBoards.SpTrelloAuthenticator := oAuthenticator;
                 SpTrelloBoards.DataSet := QryQuadros;
-                SpTrelloBoards.Active:= True;
+                SpTrelloBoards.Active := True;
 //
 //                LbAutomacao.Caption := '<div id="' + cGRAFICOAUTOMACAO + '" style="width: 100%; height: 100%; margin: 0 auto"></div>';
 //                Self.Script.Text := StringReplace(Self.Script.Text, '%AUTOMACAO%', cGRAFICOAUTOMACAO, [rfIgnoreCase, rfReplaceAll]);

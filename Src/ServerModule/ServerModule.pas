@@ -26,7 +26,7 @@ implementation
 
 function UniServerModule: TUniServerModule;
 begin
-  Result:=TUniServerModule(UniGUIServerInstance);
+  Result := TUniServerModule(UniGUIServerInstance);
 end;
 
 procedure TUniServerModule.FirstInit;

@@ -7,7 +7,6 @@ uses
   FireDAC.Comp.Client, Data.DB;
 
 type
-//  TSpTrelloCards = class(TComponent)
   TSpTrelloCards = class
   private
     FSpTrelloAuthenticator: TSpTrelloAuthenticator;
@@ -18,8 +17,6 @@ type
     procedure SetSpTrelloAuthenticator(const Value: TSpTrelloAuthenticator);
     procedure SetDataSet(const Value: TFDMemTable);
     procedure SetIdList(const Value: string);
-  protected
-    //procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     function Insert(const AName: string): Boolean;
     procedure Refresh;
@@ -46,18 +43,18 @@ resourcestring
 
 function TSpTrelloCards.Delete: Boolean;
 begin
-  Result:= FDataSet <> nil;
+  Result := FDataSet <> nil;
   if Result then
-    Result:= Self.Delete(FDataSet.FieldByName('id').AsString);
+    Result := Self.Delete(FDataSet.FieldByName('id').AsString);
 end;
 
 function TSpTrelloCards.Delete(const AId: string): Boolean;
 begin
-  Result:= False;
+  Result := False;
   with TCoreSpTrellocards.Create(FIdList, FSpTrelloAuthenticator) do
   begin
     try
-      Result:= Delete(AId).StatusCode = 200;
+      Result := Delete(AId).StatusCode = 200;
     finally
       Free;
     end;
@@ -66,7 +63,7 @@ end;
 
 function TSpTrelloCards.Edit(const AId, FieldName, Value: string): Boolean;
 begin
-  Result:= False;
+  Result := False;
   if FSpTrelloAuthenticator = nil then
     raise Exception.Create(StrComponentAuthentica);
 
@@ -76,7 +73,7 @@ begin
   with TCoreSpTrelloCards.Create(FIdList, FSpTrelloAuthenticator) do
   begin
     try
-      Result:= Put(AId, FieldName, Value).StatusCode = 200;
+      Result := Put(AId, FieldName, Value).StatusCode = 200;
     finally
       Free;
     end;
@@ -85,14 +82,14 @@ end;
 
 function TSpTrelloCards.Edit(FieldName, Value: string): Boolean;
 begin
-  Result:= FDataSet <> nil;
+  Result := FDataSet <> nil;
   if Result then
-    Result:= Self.Edit(FDataSet.FieldByName('id').AsString, FieldName, Value);
+    Result := Self.Edit(FDataSet.FieldByName('id').AsString, FieldName, Value);
 end;
 
 function TSpTrelloCards.Insert(const AName: string): Boolean;
 begin
-  Result:= False;
+  Result := False;
   if FSpTrelloAuthenticator = nil then
     raise Exception.Create(StrComponentAuthentica);
 
@@ -102,21 +99,12 @@ begin
   with TCoreSpTrelloCards.Create(FIdList, FSpTrelloAuthenticator) do
   begin
     try
-      Result:= Post([AName, FIdList]).StatusCode = 200;
+      Result := Post([AName, FIdList]).StatusCode = 200;
     finally
       Free;
     end;
   end;
 end;
-
-//procedure TSpTrelloCards.Notification(AComponent: TComponent; Operation: TOperation);
-//begin
-//  inherited Notification(AComponent, Operation);
-//  if (Operation = opRemove) and (AComponent = FSpTrelloAuthenticator)
-//    then FSpTrelloAuthenticator := nil;
-//  if (Operation = opRemove) and (AComponent = FDataSet)
-//    then FDataSet := nil;
-//end;
 
 procedure TSpTrelloCards.Refresh;
 var
@@ -125,11 +113,11 @@ begin
   if FDataSet <> nil then
   begin
     FDataSet.DisableControls;
-    loBook:= FDataSet.Bookmark;
+    loBook := FDataSet.Bookmark;
   end;
   try
-    Active:= False;
-    Active:= True;
+    Active := False;
+    Active := True;
   finally
     if FDataSet <> nil then
     begin
@@ -153,7 +141,7 @@ begin
     if Trim(FIdList) = EmptyStr then
       raise Exception.Create(StrInformeOIdentifica);
 
-//    loTask:= TTask.Create(
+//    loTask := TTask.Create(
 //      procedure ()
 //      begin
 //        TThread.Synchronize(nil,
@@ -179,7 +167,8 @@ begin
 //      end
 //    );
 //    loTask.Start;
-  end else
+  end
+  else
   begin
     if FDataSet <> nil then
       FDataSet.Close;

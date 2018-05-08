@@ -10,7 +10,6 @@ type
   TCoreSpTrelloBoards = class(TCoreSpTrelloBase)
   public
     constructor Create(const oAuthenticator: TSpTrelloAuthenticator);
-    destructor Destroy; override;
     function Get(const aParams: array of TJSONPair): TRESTResponse;
     function Post(const aParams: array of string): TRESTResponse;
     function Put(const sValue: string; const sFieldName: string;
@@ -31,33 +30,23 @@ resourcestring
 constructor TCoreSpTrelloBoards.Create(const oAuthenticator: TSpTrelloAuthenticator);
 begin
   inherited Create(oAuthenticator);
-  EndPoint:= sBOARDS;
+  EndPoint := sBOARDS;
 end;
 
 function TCoreSpTrelloBoards.Delete(const sValue: string): TRESTResponse;
 begin
   try
-    Result:= Request(TRESTRequestMethod.rmDELETE,
+    Result := Request(TRESTRequestMethod.rmDELETE,
       Format('%s/%s/%s', [TCoreSpTrelloConstants.BaseUrl, EndPoint, sValue]), []);
   except
     raise;
   end;
 end;
 
-destructor TCoreSpTrelloBoards.Destroy;
-begin
-//
-  inherited;
-end;
-
 function TCoreSpTrelloBoards.Get(const aParams: array of TJSONPair): TRESTResponse;
 begin
   try
-    Result:= Request(TRESTRequestMethod.rmGET,
-      //Format('%s/members/%s/%s', [TCoreSpTrelloConstants.BaseUrl, SpAuthenticator.Id, EndPoint]), []);
-      ////Format('%s/members/%s/%s/%s', [TCoreSpTrelloConstants.BaseUrl, SpAuthenticator.Id, EndPoint, '?actions=all']), []);
-      //Format('%s/members/%s/%s/%s', [TCoreSpTrelloConstants.BaseUrl, SpAuthenticator.Id, EndPoint, '?actions=all&lists=all']), []);
-      //Format('%s/%s/%s', [TCoreSpTrelloConstants.BaseUrl, EndPoint, 'actions=all']), []);
+    Result := Request(TRESTRequestMethod.rmGET,
       Format('%s/%s', [TCoreSpTrelloConstants.BaseUrl, EndPoint + '/5a25f63cd4647d9a3ef75898']), []);
   except
     raise;
@@ -67,7 +56,7 @@ end;
 function TCoreSpTrelloBoards.Post(const aParams: array of string): TRESTResponse;
 begin
   try
-    Result:= Request(TRESTRequestMethod.rmPOST,
+    Result := Request(TRESTRequestMethod.rmPOST,
       Format('%s/%s', [TCoreSpTrelloConstants.BaseUrl, EndPoint]),
       [TJSONPair.Create('name', aParams[0])]);
   except
@@ -79,7 +68,7 @@ function TCoreSpTrelloBoards.Put(const sValue, sFieldName,
   aParams: string): TRESTResponse;
 begin
   try
-    Result:= Request(TRESTRequestMethod.rmPUT,
+    Result := Request(TRESTRequestMethod.rmPUT,
       Format('%s/%s/%s/%s', [TCoreSpTrelloConstants.BaseUrl, EndPoint, sValue, sFieldName]),
       [TJSONPair.Create('value', aParams)]);
   except

@@ -7,7 +7,6 @@ uses
   FireDAC.Comp.Client, Data.DB;
 
 type
-//  TSpTrelloOrganizations = class(TComponent)
   TSpTrelloOrganizations = class
   private
     FSpAuthenticator: TSpTrelloAuthenticator;
@@ -16,9 +15,6 @@ type
     procedure SetSpAuthenticator(const Value: TSpTrelloAuthenticator);
     procedure SetDataSet(const Value: TFDMemTable);
     procedure SetActive(const Value: Boolean);
-  protected
-    //procedure Notification(AComponent: TComponent;
-    //  Operation: TOperation); override;
   public
     procedure Refresh;
     function Delete: Boolean; overload;
@@ -43,9 +39,9 @@ resourcestring
 
 function TSpTrelloOrganizations.Delete: Boolean;
 begin
-  Result:= FDataSet <> nil;
+  Result := FDataSet <> nil;
   if Result then
-    Result:= Self.Delete(FDataSet.FieldByName('id').AsString);
+    Result := Self.Delete(FDataSet.FieldByName('id').AsString);
 end;
 
 function TSpTrelloOrganizations.Delete(const sId: string): Boolean;
@@ -62,9 +58,9 @@ end;
 
 function TSpTrelloOrganizations.Edit(sFieldName, sValue: string): Boolean;
 begin
-  Result:= FDataSet <> nil;
+  Result := FDataSet <> nil;
   if Result then
-    Result:= Self.Edit(FDataSet.FieldByName('id').AsString, sFieldName, sValue);
+    Result := Self.Edit(FDataSet.FieldByName('id').AsString, sFieldName, sValue);
 end;
 
 function TSpTrelloOrganizations.Edit(const sId, sFieldName,
@@ -76,7 +72,7 @@ begin
   with TCoreSpTrelloOrganizations.Create(FSpAuthenticator) do
   begin
     try
-      Result:= Put(sId, sFieldName, sValue).StatusCode = 200;
+      Result := Put(sId, sFieldName, sValue).StatusCode = 200;
     finally
       Free;
     end;
@@ -92,22 +88,12 @@ begin
   with TCoreSpTrelloOrganizations.Create(FSpAuthenticator) do
   begin
     try
-      Result:= Post([sName, sDisplayName, sDesc, sWebSite]).StatusCode = 200;
+      Result := Post([sName, sDisplayName, sDesc, sWebSite]).StatusCode = 200;
     finally
       Free;
     end;
   end;
 end;
-
-//procedure TSpTrelloOrganizations.Notification(AComponent: TComponent;
-//  Operation: TOperation);
-//begin
-//  inherited Notification(AComponent, Operation);
-//  if (Operation = opRemove) and (AComponent = FSpAuthenticator) then
-//    FSpAuthenticator := nil;
-//  if (Operation = opRemove) and (AComponent = FDataSet) then
-//    FDataSet := nil;
-//end;
 
 procedure TSpTrelloOrganizations.Refresh;
 var
@@ -116,11 +102,11 @@ begin
   if FDataSet <> nil then
   begin
     FDataSet.DisableControls;
-    loBook:= FDataSet.Bookmark;
+    loBook := FDataSet.Bookmark;
   end;
   try
-    Active:= False;
-    Active:= True;
+    Active := False;
+    Active := True;
   finally
     if FDataSet <> nil then
     begin
@@ -146,7 +132,7 @@ begin
 //      begin
 //        TThread.Synchronize(nil,
 //        procedure
-        begin
+//        begin
           with TCoreSpTrelloOrganizations.Create(FSpAuthenticator) do
           begin
             if FDataSet <> nil then
@@ -163,7 +149,7 @@ begin
               Free;
             end;
           end;
-        end
+//        end
 //      );
 //      end
 //    );

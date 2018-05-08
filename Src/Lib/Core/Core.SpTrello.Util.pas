@@ -21,21 +21,18 @@ var
   oRESTResponseDataSetAdapter: TRESTResponseDataSetAdapter;
 begin
   Self.Close;
-  if Value.content = '[]' then
+  if Value.content <> '[]' then
   begin
-    Value.Free;
-    Exit;
+    oRESTResponseDataSetAdapter := TRESTResponseDataSetAdapter.Create(nil);
+    try
+      oRESTResponseDataSetAdapter.Dataset := Self;
+      oRESTResponseDataSetAdapter.Response := Value;
+      if AOpen then
+        Self.Open;
+    finally
+      FreeAndNil(oRESTResponseDataSetAdapter);
+    end;
   end;
-  oRESTResponseDataSetAdapter:= TRESTResponseDataSetAdapter.Create(nil);
-  try
-    oRESTResponseDataSetAdapter.Dataset:= Self;
-    oRESTResponseDataSetAdapter.Response:= Value;
-    if AOpen then
-      Self.Open;
-  finally
-    FreeAndNil(oRESTResponseDataSetAdapter);
-  end;
-  Value.Free;
 end;
 
 end.
