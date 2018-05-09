@@ -47,10 +47,10 @@ object FrmPrincipal: TFrmPrincipal
     '        xAxis: {'
     '            gridLineColor: '#39'#707073'#39','
     '            labels: {                '
-    '                useHTML: true,'
+    '                //useHTML: true,'
     '                style: {'
     '                    color: '#39'#E0E0E3'#39',                    '
-    '                    fontSize: '#39'10px'#39
+    '                    fontSize: '#39'5px'#39
     '                }'
     '            },'
     '            lineColor: '#39'#707073'#39','
@@ -297,6 +297,7 @@ object FrmPrincipal: TFrmPrincipal
     Hint = ''
     ActivePage = TSGraficoSPTrelloAutomacao
     Images = UniMainModule.UniImageList
+    TabBarVisible = False
     Align = alClient
     Anchors = [akLeft, akTop, akRight, akBottom]
     ClientEvents.ExtEvents.Strings = (
@@ -313,6 +314,9 @@ object FrmPrincipal: TFrmPrincipal
       Hint = ''
       ImageIndex = 0
       Caption = 'Gr'#225'fico SPTrello Automa'#231#227'o'
+      DesignSize = (
+        701
+        557)
       object LbAutomacao: TUniLabel
         Left = 0
         Top = 35
@@ -334,12 +338,113 @@ object FrmPrincipal: TFrmPrincipal
         Width = 701
         Height = 35
         Hint = ''
+        Visible = False
         Align = alTop
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 1
         BorderStyle = ubsNone
         ShowCaption = False
         Caption = 'UniPanel1'
+      end
+      object UniPanel3: TUniPanel
+        Left = 0
+        Top = 105
+        Width = 256
+        Height = 96
+        Hint = ''
+        ParentFont = False
+        Font.Height = -13
+        TabOrder = 2
+        BorderStyle = ubsNone
+        ShowCaption = False
+        Caption = 'UniPanel3'
+        Color = clNone
+        object UniLabel2: TUniLabel
+          AlignWithMargins = True
+          Left = 4
+          Top = 4
+          Width = 248
+          Height = 48
+          Hint = ''
+          Alignment = taCenter
+          AutoSize = False
+          Caption = '00/000'
+          Align = alTop
+          Anchors = [akLeft, akTop, akRight]
+          ParentFont = False
+          Font.Color = 9408555
+          Font.Height = -40
+          TabOrder = 1
+          ExplicitLeft = 0
+          ExplicitTop = -6
+        end
+        object UniLabel3: TUniLabel
+          AlignWithMargins = True
+          Left = 4
+          Top = 58
+          Width = 248
+          Height = 24
+          Hint = ''
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'CARDS'
+          Align = alTop
+          Anchors = [akLeft, akTop, akRight]
+          ParentFont = False
+          Font.Color = 8555167
+          Font.Height = -20
+          TabOrder = 2
+          ExplicitWidth = 66
+        end
+      end
+      object UniPanel4: TUniPanel
+        Left = 444
+        Top = 105
+        Width = 256
+        Height = 96
+        Hint = ''
+        Anchors = [akTop, akRight]
+        ParentFont = False
+        Font.Height = -13
+        TabOrder = 3
+        BorderStyle = ubsNone
+        ShowCaption = False
+        Caption = 'UniPanel3'
+        Color = clNone
+        object UniLabel4: TUniLabel
+          AlignWithMargins = True
+          Left = 3
+          Top = 3
+          Width = 250
+          Height = 48
+          Hint = ''
+          Alignment = taCenter
+          AutoSize = False
+          Caption = '000 %'
+          Align = alTop
+          Anchors = [akLeft, akTop, akRight]
+          ParentFont = False
+          Font.Color = 9408555
+          Font.Height = -40
+          TabOrder = 1
+        end
+        object UniLabel5: TUniLabel
+          AlignWithMargins = True
+          Left = 3
+          Top = 57
+          Width = 250
+          Height = 24
+          Hint = ''
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'PORCENTAGEM'
+          Align = alTop
+          Anchors = [akLeft, akTop, akRight]
+          ParentFont = False
+          Font.Color = 8555167
+          Font.Height = -20
+          TabOrder = 2
+        end
       end
     end
   end
@@ -349,6 +454,7 @@ object FrmPrincipal: TFrmPrincipal
     Width = 709
     Height = 55
     Hint = ''
+    Visible = False
     Align = alTop
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1

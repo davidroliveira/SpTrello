@@ -21,7 +21,6 @@ type
     UniPageControl1: TUniPageControl;
     TSGraficoSPTrelloAutomacao: TUniTabSheet;
     LbAutomacao: TUniLabel;
-    UniPanel1: TUniPanel;
     UniTimer: TUniTimer;
     UniPanel2: TUniPanel;
     UniButton1: TUniButton;
@@ -29,6 +28,13 @@ type
     UniLabel1: TUniLabel;
     TblCategorias: TFDMemTable;
     TblSeries: TFDMemTable;
+    UniLabel2: TUniLabel;
+    UniPanel1: TUniPanel;
+    UniPanel3: TUniPanel;
+    UniLabel3: TUniLabel;
+    UniPanel4: TUniPanel;
+    UniLabel4: TUniLabel;
+    UniLabel5: TUniLabel;
     procedure UniPageControl1AjaxEvent(Sender: TComponent; EventName: string;
       Params: TUniStrings);
     procedure UniFormCreate(Sender: TObject);
@@ -183,7 +189,7 @@ begin
 
                 LbAutomacao.Caption := '<div id="' + cGRAFICOAUTOMACAO + '" style="width: 100%; height: 100%; margin: 0 auto"></div>';
                 Self.Script.Text := StringReplace(Self.Script.Text, '%AUTOMACAO%', cGRAFICOAUTOMACAO, [rfIgnoreCase, rfReplaceAll]);
-                Self.Script.Text := StringReplace(Self.Script.Text, '%TITULOAUTOMACAO%', SpTrelloBoards.DataSet.FieldByName('NAME').AsString, [rfIgnoreCase, rfReplaceAll]);
+                Self.Script.Text := StringReplace(Self.Script.Text, '%TITULOAUTOMACAO%', 'Quadro ' + SpTrelloBoards.DataSet.FieldByName('NAME').AsString, [rfIgnoreCase, rfReplaceAll]);
 
                 if SpTrelloLists.IdBoard <> SpTrelloBoards.DataSet.FieldByName('id').AsString then
                 begin
@@ -267,16 +273,16 @@ begin
                     if TblSeries.Locate('name', TblCategorias.FieldByName('name').AsString, [loCaseInsensitive]) then
                     begin
                       FormatSettings.DecimalSeparator := '.';
-                      //Series := Series + '{name: ' + QuotedStr(TblCategorias.FieldByName('name').AsString +
-                      Series := Series + '{name: ' + QuotedStr('<span style="white-space: nowrap;">' + TblCategorias.FieldByName('name').AsString + '</span>' +
+                      Series := Series + '{name: ' + QuotedStr(TblCategorias.FieldByName('name').AsString +
+                      //Series := Series + '{name: ' + QuotedStr('<span style="white-space: nowrap;">' + TblCategorias.FieldByName('name').AsString + '</span>' +
                         ' Cards: ' + FormatFloat('0', TblSeries.FieldByName('quantidade').AsInteger) + '/' + FormatFloat('0', TblCategorias.FieldByName('quantidade').AsInteger)) +
                         ', y: ' + FormatFloat('0.####', ((TblSeries.FieldByName('quantidade').AsInteger / TblCategorias.FieldByName('quantidade').AsInteger) * 100)) + '}';
                       FormatSettings.DecimalSeparator := ',';
                     end
                     else
                     begin
-                      //Series := Series + '{name: ' + QuotedStr(TblCategorias.FieldByName('name').AsString +
-                      Series := Series + '{name: ' + QuotedStr('<span style="white-space: nowrap;">' + TblCategorias.FieldByName('name').AsString + '</span>' +
+                      Series := Series + '{name: ' + QuotedStr(TblCategorias.FieldByName('name').AsString +
+                      //Series := Series + '{name: ' + QuotedStr('<span style="white-space: nowrap;">' + TblCategorias.FieldByName('name').AsString + '</span>' +
                         ' Cards: 0/' + FormatFloat('0', TblCategorias.FieldByName('quantidade').AsInteger)) +
                         ', y: 0}';
                     end;
@@ -284,8 +290,8 @@ begin
                     if TblCategorias.RecNo < TblCategorias.RecordCount then
                       Series := Series + ', ';
 
-                    //Categorias := Categorias + QuotedStr(TblCategorias.FieldByName('name').AsString);
-                    Categorias := Categorias + QuotedStr('<span style="white-space: nowrap;">' + TblCategorias.FieldByName('name').AsString + '</span>');
+                    Categorias := Categorias + QuotedStr(TblCategorias.FieldByName('name').AsString);
+                    //Categorias := Categorias + QuotedStr('<span style="white-space: nowrap;">' + TblCategorias.FieldByName('name').AsString + '</span>');
                     if TblCategorias.RecNo < TblCategorias.RecordCount then
                       Categorias := Categorias + ', ';
 
