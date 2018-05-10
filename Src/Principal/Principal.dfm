@@ -50,7 +50,7 @@ object FrmPrincipal: TFrmPrincipal
     '                //useHTML: true,'
     '                style: {'
     '                    color: '#39'#E0E0E3'#39',                    '
-    '                    fontSize: '#39'5px'#39
+    '                    fontSize: '#39'7px'#39
     '                }'
     '            },'
     '            lineColor: '#39'#707073'#39','
