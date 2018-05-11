@@ -291,9 +291,9 @@ object FrmPrincipal: TFrmPrincipal
   TextHeight = 13
   object UniPageControl1: TUniPageControl
     Left = 0
-    Top = 55
+    Top = 0
     Width = 709
-    Height = 585
+    Height = 640
     Hint = ''
     ActivePage = TSGraficoSPTrelloAutomacao
     Images = UniMainModule.UniImageList
@@ -310,18 +310,21 @@ object FrmPrincipal: TFrmPrincipal
         ');'#13#10'}')
     TabOrder = 0
     OnAjaxEvent = UniPageControl1AjaxEvent
+    ExplicitTop = 55
+    ExplicitHeight = 585
     object TSGraficoSPTrelloAutomacao: TUniTabSheet
       Hint = ''
       ImageIndex = 0
       Caption = 'Gr'#225'fico SPTrello Automa'#231#227'o'
+      ExplicitHeight = 557
       DesignSize = (
         701
-        557)
+        612)
       object LbAutomacao: TUniLabel
         Left = 0
-        Top = 35
+        Top = 0
         Width = 701
-        Height = 522
+        Height = 612
         Hint = ''
         TextConversion = txtHTML
         AutoSize = False
@@ -331,20 +334,8 @@ object FrmPrincipal: TFrmPrincipal
         ParentColor = False
         Color = clLime
         TabOrder = 0
-      end
-      object UniPanel1: TUniPanel
-        Left = 0
-        Top = 0
-        Width = 701
-        Height = 35
-        Hint = ''
-        Visible = False
-        Align = alTop
-        Anchors = [akLeft, akTop, akRight]
-        TabOrder = 1
-        BorderStyle = ubsNone
-        ShowCaption = False
-        Caption = 'UniPanel1'
+        ExplicitTop = 35
+        ExplicitHeight = 522
       end
       object UniPanel3: TUniPanel
         Left = 0
@@ -354,16 +345,16 @@ object FrmPrincipal: TFrmPrincipal
         Hint = ''
         ParentFont = False
         Font.Height = -13
-        TabOrder = 2
+        TabOrder = 1
         BorderStyle = ubsNone
         ShowCaption = False
         Caption = 'UniPanel3'
         Color = clNone
-        object UniLabel2: TUniLabel
+        object LbTotalCards: TUniLabel
           AlignWithMargins = True
-          Left = 4
-          Top = 4
-          Width = 248
+          Left = 3
+          Top = 3
+          Width = 250
           Height = 48
           Hint = ''
           Alignment = taCenter
@@ -375,15 +366,13 @@ object FrmPrincipal: TFrmPrincipal
           Font.Color = 9408555
           Font.Height = -40
           TabOrder = 1
-          ExplicitLeft = 0
-          ExplicitTop = -6
         end
         object UniLabel3: TUniLabel
           AlignWithMargins = True
-          Left = 4
-          Top = 58
-          Width = 248
-          Height = 24
+          Left = 3
+          Top = 57
+          Width = 250
+          Height = 23
           Hint = ''
           Alignment = taCenter
           AutoSize = False
@@ -392,13 +381,35 @@ object FrmPrincipal: TFrmPrincipal
           Anchors = [akLeft, akTop, akRight]
           ParentFont = False
           Font.Color = 8555167
-          Font.Height = -20
+          Font.Height = -16
           TabOrder = 2
-          ExplicitWidth = 66
+          ExplicitTop = 55
+        end
+        object UniPanel5: TUniPanel
+          Left = 50
+          Top = 67
+          Width = 45
+          Height = 1
+          Hint = ''
+          TabOrder = 3
+          ShowCaption = False
+          Caption = ''
+          Color = 8555167
+        end
+        object UniPanel6: TUniPanel
+          Left = 160
+          Top = 67
+          Width = 45
+          Height = 1
+          Hint = ''
+          TabOrder = 4
+          ShowCaption = False
+          Caption = ''
+          Color = 8555167
         end
       end
       object UniPanel4: TUniPanel
-        Left = 444
+        Left = 450
         Top = 105
         Width = 256
         Height = 96
@@ -406,12 +417,12 @@ object FrmPrincipal: TFrmPrincipal
         Anchors = [akTop, akRight]
         ParentFont = False
         Font.Height = -13
-        TabOrder = 3
+        TabOrder = 2
         BorderStyle = ubsNone
         ShowCaption = False
         Caption = 'UniPanel3'
         Color = clNone
-        object UniLabel4: TUniLabel
+        object LbPercentual: TUniLabel
           AlignWithMargins = True
           Left = 3
           Top = 3
@@ -420,7 +431,7 @@ object FrmPrincipal: TFrmPrincipal
           Hint = ''
           Alignment = taCenter
           AutoSize = False
-          Caption = '000 %'
+          Caption = '000%'
           Align = alTop
           Anchors = [akLeft, akTop, akRight]
           ParentFont = False
@@ -433,50 +444,41 @@ object FrmPrincipal: TFrmPrincipal
           Left = 3
           Top = 57
           Width = 250
-          Height = 24
+          Height = 23
           Hint = ''
           Alignment = taCenter
           AutoSize = False
-          Caption = 'PORCENTAGEM'
+          Caption = 'PROGRESSO'
           Align = alTop
           Anchors = [akLeft, akTop, akRight]
           ParentFont = False
           Font.Color = 8555167
-          Font.Height = -20
+          Font.Height = -16
           TabOrder = 2
         end
+        object UniPanel7: TUniPanel
+          Left = 30
+          Top = 67
+          Width = 45
+          Height = 1
+          Hint = ''
+          TabOrder = 3
+          ShowCaption = False
+          Caption = ''
+          Color = 8555167
+        end
+        object UniPanel8: TUniPanel
+          Left = 180
+          Top = 67
+          Width = 45
+          Height = 1
+          Hint = ''
+          TabOrder = 4
+          ShowCaption = False
+          Caption = ''
+          Color = 8555167
+        end
       end
-    end
-  end
-  object UniPanel2: TUniPanel
-    Left = 0
-    Top = 0
-    Width = 709
-    Height = 55
-    Hint = ''
-    Visible = False
-    Align = alTop
-    Anchors = [akLeft, akTop, akRight]
-    TabOrder = 1
-    Caption = 'UniPanel2'
-    object UniButton1: TUniButton
-      Left = 16
-      Top = 12
-      Width = 75
-      Height = 25
-      Hint = ''
-      Caption = 'UniButton1'
-      TabOrder = 1
-      OnClick = UniButton1Click
-    end
-    object UniLabel1: TUniLabel
-      Left = 158
-      Top = 12
-      Width = 46
-      Height = 13
-      Hint = ''
-      Caption = 'UniLabel1'
-      TabOrder = 2
     end
   end
   object QryQuadros: TFDMemTable
@@ -523,16 +525,6 @@ object FrmPrincipal: TFrmPrincipal
     OnTimer = UniTimerTimer
     Left = 500
     Top = 32
-  end
-  object UniTimer1: TUniTimer
-    ClientEvent.Strings = (
-      'function(sender)'
-      '{'
-      ' '
-      '}')
-    OnTimer = UniTimer1Timer
-    Left = 398
-    Top = 20
   end
   object TblCategorias: TFDMemTable
     FieldDefs = <

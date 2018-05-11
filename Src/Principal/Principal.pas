@@ -22,25 +22,22 @@ type
     TSGraficoSPTrelloAutomacao: TUniTabSheet;
     LbAutomacao: TUniLabel;
     UniTimer: TUniTimer;
-    UniPanel2: TUniPanel;
-    UniButton1: TUniButton;
-    UniTimer1: TUniTimer;
-    UniLabel1: TUniLabel;
     TblCategorias: TFDMemTable;
     TblSeries: TFDMemTable;
-    UniLabel2: TUniLabel;
-    UniPanel1: TUniPanel;
+    LbTotalCards: TUniLabel;
     UniPanel3: TUniPanel;
     UniLabel3: TUniLabel;
     UniPanel4: TUniPanel;
-    UniLabel4: TUniLabel;
+    LbPercentual: TUniLabel;
     UniLabel5: TUniLabel;
+    UniPanel5: TUniPanel;
+    UniPanel6: TUniPanel;
+    UniPanel7: TUniPanel;
+    UniPanel8: TUniPanel;
     procedure UniPageControl1AjaxEvent(Sender: TComponent; EventName: string;
       Params: TUniStrings);
     procedure UniFormCreate(Sender: TObject);
     procedure UniTimerTimer(Sender: TObject);
-    procedure UniButton1Click(Sender: TObject);
-    procedure UniTimer1Timer(Sender: TObject);
   private
     { Private declarations }
     ScriptOriginal: string;
@@ -83,6 +80,8 @@ var
   Categorias: string;
   Series: string;
   OldScript: string;
+  QuantidadeTotal: integer;
+  QuantidadeImplementado: integer;
 
   procedure ValidarCard(const ACard: string; out IdCard: Integer; out NameCard: string);
   var
@@ -266,6 +265,8 @@ begin
                   end;
                   Categorias := NullAsStringValue;
                   Series := NullAsStringValue;
+                  QuantidadeTotal := 0;
+                  QuantidadeImplementado := 0;
                   TblCategorias.First;
                   while not TblCategorias.Eof do
                   begin
@@ -278,6 +279,7 @@ begin
                         ' Cards: ' + FormatFloat('0', TblSeries.FieldByName('quantidade').AsInteger) + '/' + FormatFloat('0', TblCategorias.FieldByName('quantidade').AsInteger)) +
                         ', y: ' + FormatFloat('0.####', ((TblSeries.FieldByName('quantidade').AsInteger / TblCategorias.FieldByName('quantidade').AsInteger) * 100)) + '}';
                       FormatSettings.DecimalSeparator := ',';
+                      QuantidadeImplementado := QuantidadeImplementado + TblSeries.FieldByName('quantidade').AsInteger;
                     end
                     else
                     begin
@@ -286,7 +288,7 @@ begin
                         ' Cards: 0/' + FormatFloat('0', TblCategorias.FieldByName('quantidade').AsInteger)) +
                         ', y: 0}';
                     end;
-
+                    QuantidadeTotal := QuantidadeTotal + TblCategorias.FieldByName('quantidade').AsInteger;
                     if TblCategorias.RecNo < TblCategorias.RecordCount then
                       Series := Series + ', ';
 
@@ -298,6 +300,8 @@ begin
                     TblCategorias.next;
                   end;
 
+                  LbTotalCards.Caption := IntToStr(QuantidadeImplementado) + '/' + IntToStr(QuantidadeTotal);
+                  LbPercentual.Caption := FormatFloat('0', (QuantidadeImplementado / QuantidadeTotal) * 100) + '%';
                   Self.Script.Text := StringReplace(Self.Script.Text, '%CATEGORIASAUTOMACAO%', Categorias, [rfIgnoreCase, rfReplaceAll]);
                   Self.Script.Text := StringReplace(Self.Script.Text, '%DATAAUTOMACAO%', Series, [rfIgnoreCase, rfReplaceAll]);
 
@@ -306,7 +310,7 @@ begin
                   //Series.SaveToFile(UniServerModule.LocalCachePath + '\dados.json');
 
                   //Self.Script.Text := StringReplace(Self.Script.Text, '%DATAAUTOMACAO%', UniServerModule.LocalCacheURL + 'dados.json', [rfIgnoreCase, rfReplaceAll]);
-                  Self.Script.SaveToFile('c:\teste.txt');
+                  //Self.Script.SaveToFile('c:\teste.txt');
 
                   if ExecutaRedraw then
                   begin
@@ -363,16 +367,6 @@ end;
 procedure TFrmPrincipal.UniTimerTimer(Sender: TObject);
 begin
   ConsultaDadosTrello(True);
-end;
-
-procedure TFrmPrincipal.UniButton1Click(Sender: TObject);
-begin
-  ShowMessage('Agora');
-end;
-
-procedure TFrmPrincipal.UniTimer1Timer(Sender: TObject);
-begin
-  UniLabel1.Caption := FormatDateTime('dd/mm/yyyy hh:nn:ss', now);
 end;
 
 initialization
