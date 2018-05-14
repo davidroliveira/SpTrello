@@ -310,13 +310,10 @@ object FrmPrincipal: TFrmPrincipal
         ');'#13#10'}')
     TabOrder = 0
     OnAjaxEvent = UniPageControl1AjaxEvent
-    ExplicitTop = 55
-    ExplicitHeight = 585
     object TSGraficoSPTrelloAutomacao: TUniTabSheet
       Hint = ''
       ImageIndex = 0
       Caption = 'Gr'#225'fico SPTrello Automa'#231#227'o'
-      ExplicitHeight = 557
       DesignSize = (
         701
         612)
@@ -334,8 +331,6 @@ object FrmPrincipal: TFrmPrincipal
         ParentColor = False
         Color = clLime
         TabOrder = 0
-        ExplicitTop = 35
-        ExplicitHeight = 522
       end
       object UniPanel3: TUniPanel
         Left = 0
@@ -383,7 +378,6 @@ object FrmPrincipal: TFrmPrincipal
           Font.Color = 8555167
           Font.Height = -16
           TabOrder = 2
-          ExplicitTop = 55
         end
         object UniPanel5: TUniPanel
           Left = 50
@@ -392,6 +386,7 @@ object FrmPrincipal: TFrmPrincipal
           Height = 1
           Hint = ''
           TabOrder = 3
+          BorderStyle = ubsNone
           ShowCaption = False
           Caption = ''
           Color = 8555167
@@ -403,6 +398,7 @@ object FrmPrincipal: TFrmPrincipal
           Height = 1
           Hint = ''
           TabOrder = 4
+          BorderStyle = ubsNone
           ShowCaption = False
           Caption = ''
           Color = 8555167
@@ -463,6 +459,7 @@ object FrmPrincipal: TFrmPrincipal
           Height = 1
           Hint = ''
           TabOrder = 3
+          BorderStyle = ubsNone
           ShowCaption = False
           Caption = ''
           Color = 8555167
@@ -474,6 +471,7 @@ object FrmPrincipal: TFrmPrincipal
           Height = 1
           Hint = ''
           TabOrder = 4
+          BorderStyle = ubsNone
           ShowCaption = False
           Caption = ''
           Color = 8555167
